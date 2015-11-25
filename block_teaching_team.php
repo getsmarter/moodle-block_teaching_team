@@ -123,12 +123,12 @@ class block_teaching_team extends block_base {
             $html .= html_writer::tag('div', $this->user_profile_picture($user), array('class' => 'user_picture'));
 
             $html .= html_writer::start_tag('div', array('class' => 'user_details'));
-            $html .= html_writer::tag('div', $this->user_role($user));
-            $html .= html_writer::tag('div', $this->user_name($user));
-            $html .= html_writer::tag('div', $this->user_email($user));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_1($user));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_2($user));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_3($user));
+            $html .= html_writer::tag('div', $this->user_role($user), array('class' => 'detail role'));
+            $html .= html_writer::tag('div', $this->user_name($user), array('class' => 'detail name'));
+            $html .= html_writer::tag('div', $this->user_email($user), array('class' => 'detail email'));
+            $html .= html_writer::tag('div', $this->user_custom_profile_field_1($user), array('class' => 'detail cpf1'));
+            $html .= html_writer::tag('div', $this->user_custom_profile_field_2($user), array('class' => 'detail cpf2'));
+            $html .= html_writer::tag('div', $this->user_custom_profile_field_3($user), array('class' => 'detail cpf3'));
             $html .= html_writer::end_tag('div');
 
             $html .= html_writer::end_tag('div');
@@ -159,7 +159,12 @@ class block_teaching_team extends block_base {
 
             $roles = array_map(
                 function ($value) {
-                    return $value->name;
+                    if ($value->name) {
+                        $role = $value->name;
+                    } else {
+                        $role = $value->shortname;
+                    }
+                    return ucwords($role);
                 },
                 $roles
             );

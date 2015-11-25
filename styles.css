@@ -1,11 +1,16 @@
 .block_teaching_team .user_profile {
     margin-bottom: 10px;
     overflow: hidden;
+    background: #efefef;
+}
+
+.block_teaching_team .user_profile:last-child {
+    margin-bottom: 0px;
 }
 
 .block_teaching_team .user_profile .user_picture {
     float: left;
-    width: 30%;
+    width: 35%;
 }
 
 .block_teaching_team .user_profile .user_picture .user_image {
@@ -14,9 +19,28 @@
 
 .block_teaching_team .user_profile .user_details {
     float: left;
-    width: 70%;
+    width: 65%;
 }
 
-.block_teaching_team .user_profile .user_details > div {
-    margin-left: 10px;
+.block_teaching_team .user_profile .user_details .detail {
+    margin: 0px 15px;
+    font-size: 0.9em;
+}
+
+.block_teaching_team .user_profile .user_details .detail:first-child {
+    margin-top: 15px;
+}
+
+.block_teaching_team .user_profile .user_details .detail:last-child {
+    margin-bottom: 15px;
+}
+
+.block_teaching_team .user_profile .user_details .detail.role {
+    font-size: 1.15em;
+    color: #009ed7;
+    margin-bottom: 5px;
+}
+
+.block_teaching_team .user_profile .user_details .detail.email a {
+    color: #2f2f2f;
 }

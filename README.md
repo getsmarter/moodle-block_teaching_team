@@ -1,6 +1,6 @@
 # Teaching Team
 
-Teaching Team is a block that displays profile pictures and contact details of the accademic and support staff.
+Teaching Team is a block that displays profile pictures and contact details of the academic and support staff.
 
 It has settings for:
 
