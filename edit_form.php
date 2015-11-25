@@ -109,7 +109,7 @@ class block_teaching_team_edit_form extends block_edit_form {
 
         $courseid = $PAGE->course->id;
         $context = context_course::instance($courseid);
-        $users = get_enrolled_users($context);
+        $users = get_enrolled_users($context, '', 0, 'u.id, u.firstname, u.lastname', null, 0, 0, true);
 
         foreach ($users as $key => &$value) {
             $value = $value->firstname . ' ' . $value->lastname;
