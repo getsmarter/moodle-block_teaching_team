@@ -60,3 +60,4 @@ $string['user_5'] = 'User 5';
 $string['user_6'] = 'User 6';
 
 $string['cannot_view_user_details'] = 'You do not have permission to view user profiles.';
+$string['not_configured'] = 'Please choose users to display in the block configuration settings.';

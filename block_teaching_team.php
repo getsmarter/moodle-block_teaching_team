@@ -84,21 +84,35 @@ class block_teaching_team extends block_base {
 
         $context = context_course::instance($PAGE->course->id);
         $canviewuserdetails = has_capability('moodle/user:viewdetails', $context);
+        $configured = (
+            isset($this->config->user_1) ||
+            isset($this->config->user_2) ||
+            isset($this->config->user_3) ||
+            isset($this->config->user_4) ||
+            isset($this->config->user_5) ||
+            isset($this->config->user_6)
+        );
 
         // Render block contents.
         $this->content = new stdClass;
         $this->content->text = '';
         $this->content->text .= html_writer::start_tag('div', array('class' => 'teaching_team'));
 
-        if ($canviewuserdetails) {
+        if ($canviewuserdetails && $configured) {
             $this->content->text .= $this->render_user_profile($this->config->user_1);
             $this->content->text .= $this->render_user_profile($this->config->user_2);
             $this->content->text .= $this->render_user_profile($this->config->user_3);
             $this->content->text .= $this->render_user_profile($this->config->user_4);
             $this->content->text .= $this->render_user_profile($this->config->user_5);
             $this->content->text .= $this->render_user_profile($this->config->user_6);
-        } else {
+        }
+
+        if (!$canviewuserdetails) {
             $this->content->text .= html_writer::tag('p', get_string('cannot_view_user_details', 'block_teaching_team'));
+        }
+
+        if (!$configured) {
+            $this->content->text .= html_writer::tag('p', get_string('not_configured', 'block_teaching_team'));
         }
 
         $this->content->text .= html_writer::end_tag('div');
