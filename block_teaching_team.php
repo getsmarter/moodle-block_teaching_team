@@ -99,12 +99,12 @@ class block_teaching_team extends block_base {
         $this->content->text .= html_writer::start_tag('div', array('class' => 'teaching_team'));
 
         if ($canviewuserdetails && $configured) {
-            $this->content->text .= $this->render_user_profile($this->config->user_1);
-            $this->content->text .= $this->render_user_profile($this->config->user_2);
-            $this->content->text .= $this->render_user_profile($this->config->user_3);
-            $this->content->text .= $this->render_user_profile($this->config->user_4);
-            $this->content->text .= $this->render_user_profile($this->config->user_5);
-            $this->content->text .= $this->render_user_profile($this->config->user_6);
+
+            $users = $this->get_teaching_team_users();
+
+            foreach ($users as $user) {
+                $this->content->text .= $this->render_user_profile($user);
+            }
         }
 
         if (!$canviewuserdetails) {
@@ -121,14 +121,31 @@ class block_teaching_team extends block_base {
     }
 
     /**
+     * Get teaching team users
+     */
+    protected function get_teaching_team_users(){
+        global $DB;
+
+        $userids = array($this->config->user_1, $this->config->user_2, $this->config->user_3, $this->config->user_4, $this->config->user_5, $this->config->user_6);
+
+        list($useridinsql, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+
+        $sql = "SELECT *
+                    FROM {user}
+                    WHERE id ";
+
+        $sql .= $useridinsql;
+        $users = $DB->get_records_sql($sql, $params);
+
+        return $users;
+    }
+
+    /**
      * Render user profile
      * @param object $userid the user id
      */
-    protected function render_user_profile($userid) {
+    protected function render_user_profile($user) {
         global $DB, $OUTPUT, $USER;
-
-        // Get the user to display.
-        $user = get_complete_user_data('id', $userid);
 
         if ($user) {
             $html = '';
@@ -140,9 +157,8 @@ class block_teaching_team extends block_base {
             $html .= html_writer::tag('div', $this->user_role($user), array('class' => 'detail role'));
             $html .= html_writer::tag('div', $this->user_name($user), array('class' => 'detail name'));
             $html .= html_writer::tag('div', $this->user_email($user), array('class' => 'detail email'));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_1($user), array('class' => 'detail cpf1'));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_2($user), array('class' => 'detail cpf2'));
-            $html .= html_writer::tag('div', $this->user_custom_profile_field_3($user), array('class' => 'detail cpf3'));
+            $html .= $this->user_custom_profile_fields($user->id);
+
             $html .= html_writer::end_tag('div');
 
             $html .= html_writer::end_tag('div');
@@ -215,44 +231,55 @@ class block_teaching_team extends block_base {
     }
 
     /**
-     * Render user custom profile field 1
-     * @param object $user the user
+     * Render user profile fields
+     * @param integer $userid the user's id
      */
-    protected function user_custom_profile_field_1(&$user) {
-        $field = $this->config->display_custom_profile_field_1;
+    protected function user_custom_profile_fields($userid) {
+        $fields = array($this->config->display_custom_profile_field_1, $this->config->display_custom_profile_field_2, $this->config->display_custom_profile_field_3);
 
-        if ($field) {
-            if ($user->profile[$field]) {
-                return $user->profile[$field];
-            }
+        $profiledata = $this->get_custom_profile_field_data($userid, $fields);
+
+        $html = '';
+        foreach ($profiledata as $userprofiledata) {
+            $html .= html_writer::tag('div', $userprofiledata->data, array('class' => "detail $userprofiledata->shortname"));
         }
+
+        return $html;
     }
 
     /**
-     * Render user custom profile field 2
-     * @param object $user the user
+     * Get custom profile field data
+     * @param integer $userid the user's id
+     * @param array $fields the user profile fields to display
      */
-    protected function user_custom_profile_field_2(&$user) {
-        $field = $this->config->display_custom_profile_field_2;
+    protected function get_custom_profile_field_data($userid, $fields){
+        global $DB;
 
-        if ($field) {
-            if ($user->profile[$field]) {
-                return $user->profile[$field];
-            }
-        }
-    }
+        list($fieldsinsql, $fieldsinparams) = $DB->get_in_or_equal($fields, SQL_PARAMS_NAMED);
 
-    /**
-     * Render user custom profile field 3
-     * @param object $user the user
-     */
-    protected function user_custom_profile_field_3(&$user) {
-        $field = $this->config->display_custom_profile_field_3;
+        $sql = "SELECT uif.shortname, uid.data
+                FROM
+                    {user_info_data}  uid
+                INNER JOIN
+                    {user} u
+                ON
+                    uid.userid = u.id
+                INNER JOIN
+                    {user_info_field}  uif
+                ON
+                    uif.id = uid.fieldid
+                WHERE
+                    u.id = :userid
+                AND
+                    uif.shortname ";
 
-        if ($field) {
-            if ($user->profile[$field]) {
-                return $user->profile[$field];
-            }
-        }
+        $params = array('userid' => $userid);
+
+        $sql .= $fieldsinsql;
+        $params += $fieldsinparams;
+
+        $profiledata = $DB->get_records_sql($sql, $params);
+
+        return $profiledata;
     }
 }
