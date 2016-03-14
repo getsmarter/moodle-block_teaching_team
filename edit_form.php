@@ -115,7 +115,7 @@ class block_teaching_team_edit_form extends block_edit_form {
             $value = $value->firstname . ' ' . $value->lastname;
         }
 
-        $users = array('0' => 'None') + $users;
+        $users = array('0' => get_string('no_user', 'block_teaching_team')) + $users;
 
         return $users;
     }
