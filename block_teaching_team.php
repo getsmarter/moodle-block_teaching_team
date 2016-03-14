@@ -31,6 +31,8 @@
  */
 class block_teaching_team extends block_base {
 
+    private $courseroleids;
+
     /**
      * Initialize the block
      */
@@ -101,6 +103,7 @@ class block_teaching_team extends block_base {
         if ($canviewuserdetails && $configured) {
 
             $users = $this->get_teaching_team_users();
+            $this->courseroleids = array_keys(get_profile_roles($this->context));
 
             foreach ($users as $user) {
                 $this->content->text .= $this->render_user_profile($user);
@@ -123,12 +126,20 @@ class block_teaching_team extends block_base {
     /**
      * Get teaching team users
      */
-    protected function get_teaching_team_users(){
+    protected function get_teaching_team_users() {
         global $DB;
 
-        $userids = array($this->config->user_1, $this->config->user_2, $this->config->user_3, $this->config->user_4, $this->config->user_5, $this->config->user_6);
+        $userids = array(
+            $this->config->user_1,
+            $this->config->user_2,
+            $this->config->user_3,
+            $this->config->user_4,
+            $this->config->user_5,
+            $this->config->user_6
+        );
 
-        list($useridinsql, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        list($useridinsql,
+            $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
 
         $sql = "SELECT *
                     FROM {user}
@@ -185,21 +196,13 @@ class block_teaching_team extends block_base {
      */
     protected function user_role(&$user) {
         if ($this->config->display_role) {
-            $roles = get_user_roles($this->context, $user->id);
+            $userroles = get_user_roles($this->context, $user->id);
 
-            $roles = array_map(
-                function ($value) {
-                    if ($value->name) {
-                        $role = $value->name;
-                    } else {
-                        $role = $value->shortname;
-                    }
-                    return ucwords($role);
-                },
-                $roles
-            );
-
-            return join(', ', $roles);
+            foreach ($userroles as $key => $value) {
+                if (in_array($value->roleid, $this->courseroleids)) {
+                    return role_get_name($value);
+                }
+            }
         }
     }
 
@@ -235,7 +238,11 @@ class block_teaching_team extends block_base {
      * @param integer $userid the user's id
      */
     protected function user_custom_profile_fields($userid) {
-        $fields = array($this->config->display_custom_profile_field_1, $this->config->display_custom_profile_field_2, $this->config->display_custom_profile_field_3);
+        $fields = array(
+            $this->config->display_custom_profile_field_1,
+            $this->config->display_custom_profile_field_2,
+            $this->config->display_custom_profile_field_3
+        );
 
         $profiledata = $this->get_custom_profile_field_data($userid, $fields);
 
@@ -252,7 +259,7 @@ class block_teaching_team extends block_base {
      * @param integer $userid the user's id
      * @param array $fields the user profile fields to display
      */
-    protected function get_custom_profile_field_data($userid, $fields){
+    protected function get_custom_profile_field_data($userid, $fields) {
         global $DB;
 
         list($fieldsinsql, $fieldsinparams) = $DB->get_in_or_equal($fields, SQL_PARAMS_NAMED);
