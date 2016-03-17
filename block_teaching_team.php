@@ -126,7 +126,7 @@ class block_teaching_team extends block_base {
     protected function get_teaching_team_users(){
         global $DB;
 
-        $userids = array($this->config->user_1, $this->config->user_2, $this->config->user_3, $this->config->user_4, $this->config->user_5, $this->config->user_6);
+        $userids = array('userid1' => $this->config->user_1, 'userid2' => $this->config->user_2, 'userid3' => $this->config->user_3, 'userid4' => $this->config->user_4, 'userid5' => $this->config->user_5, 'userid6' => $this->config->user_6);
 
         list($useridinsql, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
 
@@ -135,6 +135,11 @@ class block_teaching_team extends block_base {
                     WHERE id ";
 
         $sql .= $useridinsql;
+
+        $sql .= " ORDER BY FIELD(id, :userid1, :userid2, :userid3, :userid4, :userid5, :userid6)";
+
+        $params += $userids;
+
         $users = $DB->get_records_sql($sql, $params);
 
         return $users;
@@ -235,7 +240,7 @@ class block_teaching_team extends block_base {
      * @param integer $userid the user's id
      */
     protected function user_custom_profile_fields($userid) {
-        $fields = array($this->config->display_custom_profile_field_1, $this->config->display_custom_profile_field_2, $this->config->display_custom_profile_field_3);
+        $fields = array('profilefield1' => $this->config->display_custom_profile_field_1, 'profilefield2' => $this->config->display_custom_profile_field_2, 'profilefield3' => $this->config->display_custom_profile_field_3);
 
         $profiledata = $this->get_custom_profile_field_data($userid, $fields);
 
@@ -277,6 +282,10 @@ class block_teaching_team extends block_base {
 
         $sql .= $fieldsinsql;
         $params += $fieldsinparams;
+
+        $sql .= " ORDER BY FIELD(uif.shortname, :profilefield1, :profilefield2, :profilefield3)";
+
+        $params += $fields;
 
         $profiledata = $DB->get_records_sql($sql, $params);
 
