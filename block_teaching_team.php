@@ -200,14 +200,11 @@ class block_teaching_team extends block_base {
      * @param object $user the user
      */
     protected function user_role(&$user) {
-        if ($this->config->display_role) {
-            $userroles = get_user_roles($this->context, $user->id);
+        global $PAGE;
 
-            foreach ($userroles as $key => $value) {
-                if (in_array($value->roleid, $this->courseroleids)) {
-                    return role_get_name($value);
-                }
-            }
+        if ($this->config->display_role) {
+            $userrole = get_user_roles_in_course($user->id, $PAGE->course->id);
+            return $userrole;
         }
     }
 
