@@ -169,13 +169,13 @@ class block_teaching_team extends block_base {
 
             $html .= html_writer::tag('div', $this->user_profile_picture($user), array('class' => 'user_picture'));
 
-            $html .= html_writer::start_tag('div', array('class' => 'user_details'));
-            $html .= html_writer::tag('div', $this->user_role($user), array('class' => 'detail role'));
-            $html .= html_writer::tag('div', $this->user_name($user), array('class' => 'detail name'));
-            $html .= html_writer::tag('div', $this->user_email($user), array('class' => 'detail email'));
+            $html .= html_writer::start_tag('ul', array('class' => 'user_details'));
+            $html .= html_writer::tag('li', $this->user_role($user), array('class' => 'detail role'));
+            $html .= html_writer::tag('li', $this->user_name($user), array('class' => 'detail name'));
+            $html .= html_writer::tag('li', $this->user_email($user), array('class' => 'detail email'));
             $html .= $this->user_custom_profile_fields($user->id);
 
-            $html .= html_writer::end_tag('div');
+            $html .= html_writer::end_tag('ul');
 
             $html .= html_writer::end_tag('div');
 
