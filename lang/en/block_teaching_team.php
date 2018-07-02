@@ -52,13 +52,16 @@ $string['display_custom_profile_field_2_desc'] = 'Display one of the user\'s cus
 $string['display_custom_profile_field_3'] = 'Custom profile field 3';
 $string['display_custom_profile_field_3_desc'] = 'Display one of the user\'s custom profile fields. Enter the shortname of the custom profile field you want to display.';
 
-$string['user_1'] = 'User 1';
-$string['user_2'] = 'User 2';
-$string['user_3'] = 'User 3';
-$string['user_4'] = 'User 4';
-$string['user_5'] = 'User 5';
-$string['user_6'] = 'User 6';
+$string['role_1'] = 'Role 1';
+$string['role_2'] = 'Role 2';
+$string['role_3'] = 'Role 3';
+$string['role_4'] = 'Role 4';
+$string['role_5'] = 'Role 5';
+$string['role_6'] = 'Role 6';
 
 $string['cannot_view_user_details'] = 'You do not have permission to view user profiles.';
 $string['not_configured'] = 'Please choose users to display in the block configuration settings.';
 $string['no_user'] = 'None';
+
+$string['grouping_header'] = 'Common module settings';
+$string['user_has_no_group'] = 'Contact your Global Success team {number + email} if your teaching team is not displaying';
