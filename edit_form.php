@@ -36,6 +36,7 @@ class block_teaching_team_edit_form extends block_edit_form {
      * @param object $mform the form being built
      */
     protected function specific_definition($mform) {
+        global $DB, $COURSE;
 
         $config = get_config('block_teaching_team');
 
@@ -90,15 +91,34 @@ class block_teaching_team_edit_form extends block_edit_form {
         $mform->setType('config_display_custom_profile_field_3', PARAM_TEXT);
         $mform->setDefault('config_display_custom_profile_field_3', $config->display_custom_profile_field_1);
 
-        $users = $this->get_course_users();
+        $roles = $this->get_course_user_roles();
 
-        // Users.
-        $mform->addElement('select', 'config_user_1', get_string('user_1', 'block_teaching_team'), $users);
-        $mform->addElement('select', 'config_user_2', get_string('user_2', 'block_teaching_team'), $users);
-        $mform->addElement('select', 'config_user_3', get_string('user_3', 'block_teaching_team'), $users);
-        $mform->addElement('select', 'config_user_4', get_string('user_4', 'block_teaching_team'), $users);
-        $mform->addElement('select', 'config_user_5', get_string('user_5', 'block_teaching_team'), $users);
-        $mform->addElement('select', 'config_user_6', get_string('user_6', 'block_teaching_team'), $users);
+        $mform->addElement('select', 'config_role_1', get_string('role_1', 'block_teaching_team'), $roles);
+        $mform->addElement('select', 'config_role_2', get_string('role_2', 'block_teaching_team'), $roles);
+        $mform->addElement('select', 'config_role_3', get_string('role_3', 'block_teaching_team'), $roles);
+        $mform->addElement('select', 'config_role_4', get_string('role_4', 'block_teaching_team'), $roles);
+        $mform->addElement('select', 'config_role_5', get_string('role_5', 'block_teaching_team'), $roles);
+        $mform->addElement('select', 'config_role_6', get_string('role_6', 'block_teaching_team'), $roles);
+
+        $mform->addElement('header', 'block_teaching_team_groupings', get_string('grouping_header', 'block_teaching_team'));
+
+        $options = array(NOGROUPS       => get_string('groupsnone'),
+                             SEPARATEGROUPS => get_string('groupsseparate'),
+                             VISIBLEGROUPS  => get_string('groupsvisible'));
+        $mform->addElement('select', 'config_groupmode', get_string('groupmode', 'group'), $options, NOGROUPS);
+        $mform->addHelpButton('config_groupmode', 'groupmode', 'group');
+
+
+        $options = array();
+        if ($groupings = $DB->get_records('groupings', array('courseid'=>$COURSE->id))) {
+            foreach ($groupings as $grouping) {
+                $options[$grouping->name] = format_string($grouping->name);
+            }
+        }
+        core_collator::asort($options);
+        $options = array(0 => get_string('none')) + $options;
+        $mform->addElement('select', 'config_grouping', get_string('grouping', 'group'), $options);
+        $mform->addHelpButton('config_grouping', 'grouping', 'group');
     }
 
     /**
@@ -119,4 +139,19 @@ class block_teaching_team_edit_form extends block_edit_form {
 
         return $users;
     }
+
+    /**
+     * Returns an array of users in the course formatted for a select box.
+     */
+    private function get_course_user_roles() {
+        global $PAGE, $DB;
+
+        $courseid = $PAGE->course->id;
+        $context = context_course::instance($courseid);
+        $rolessql = 'SELECT r.id, r.name  from {role_assignments} ra LEFT JOIN {role} r on ra.roleid WHERE r.shortname <> "student" and r.name <> "" and ra.contextid = ?';
+
+        $roles = $DB->get_records_sql_menu($rolessql, array($context->id));
+
+        return array('0' => get_string('no_user', 'block_teaching_team')) + $roles;
+    }    
 }

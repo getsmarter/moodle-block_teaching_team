@@ -87,12 +87,12 @@ class block_teaching_team extends block_base {
         $context = context_course::instance($PAGE->course->id);
         $canviewuserdetails = has_capability('moodle/user:viewdetails', $context);
         $configured = (
-            isset($this->config->user_1) ||
-            isset($this->config->user_2) ||
-            isset($this->config->user_3) ||
-            isset($this->config->user_4) ||
-            isset($this->config->user_5) ||
-            isset($this->config->user_6)
+            isset($this->config->role_1) ||
+            isset($this->config->role_2) ||
+            isset($this->config->role_3) ||
+            isset($this->config->role_4) ||
+            isset($this->config->role_5) ||
+            isset($this->config->role_6)
         );
 
         // Render block contents.
@@ -103,6 +103,11 @@ class block_teaching_team extends block_base {
         if ($canviewuserdetails && $configured) {
 
             $users = $this->get_teaching_team_users();
+
+            if (sizeof($users) == 0) {
+                $this->content->text .= html_writer::tag('p', get_string('user_has_no_group', 'block_teaching_team'));
+                return $this->content;
+            }
             $this->courseroleids = array_keys(get_profile_roles($this->context));
 
             foreach ($users as $user) {
@@ -127,31 +132,59 @@ class block_teaching_team extends block_base {
      * Get teaching team users
      */
     protected function get_teaching_team_users() {
-        global $DB;
+        global $PAGE, $DB, $USER;
 
-        $userids = array(
-            'userid1' => $this->config->user_1,
-            'userid2' => $this->config->user_2,
-            'userid3' => $this->config->user_3,
-            'userid4' => $this->config->user_4,
-            'userid5' => $this->config->user_5,
-            'userid6' => $this->config->user_6
+        $courseid = $PAGE->course->id;
+        $context = context_course::instance($courseid);
+
+        $groupids = '';
+
+        if (isset($this->config->groupmode)) {
+            if ($this->config->groupmode == 1) {
+                if (isset($this->config->grouping)) {
+                    foreach ($this->get_user_groups($this->config->grouping, $courseid, $USER->id) as $groupid) {
+                        $groupids.= $groupid->id.',';
+                    }                    
+                }
+
+                if ($groupids === '') {
+                    return array();
+                }
+            }
+        }
+
+        if ((isset($this->config->groupmode) || isset($this->config->grouping)) && $groupids === '') {
+            if ($this->config->groupmode == 1) {
+                return array();
+            }
+        }
+
+
+        $groupids = rtrim($groupids, ',');
+
+        $roleid = array(
+            'roleid1' => $this->config->role_1,
+            'roleid2' => $this->config->role_2,
+            'roleid3' => $this->config->role_3,
+            'roleid4' => $this->config->role_4,
+            'roleid5' => $this->config->role_5,
+            'roleid6' => $this->config->role_6
         );
 
-        list($useridinsql,
-            $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        list($roleassigninsql,
+            $params) = $DB->get_in_or_equal($roleid, SQL_PARAMS_NAMED);
 
-        $sql = "SELECT *
-                    FROM {user}
-                    WHERE id ";
+        $roleassignsql = 'SELECT ra.id, ra.roleid AS roleid, u.id, u.firstname, u.lastname FROM {role_assignments} ra LEFT JOIN {user} u on ra.userid = u.id LEFT JOIN {groups_members} gm ON u.id = gm.userid WHERE ra.contextid = '.$context->id.' AND ra.roleid ';
 
-        $sql .= $useridinsql;
+        $roleassignsql .= $roleassigninsql;
 
-        $sql .= " ORDER BY FIELD(id, :userid1, :userid2, :userid3, :userid4, :userid5, :userid6)";
+        if ($groupids != '') {
+            $roleassignsql .= ' AND gm.groupid IN ('.$groupids.')';
+        }
 
-        $params += $userids;
+        $roleassignsql .= ' ORDER BY FIELD(roleid, '.$this->config->role_1.', '.$this->config->role_2.', '.$this->config->role_3.', '.$this->config->role_4.', '.$this->config->role_5.', '.$this->config->role_6.')';
 
-        $users = $DB->get_records_sql($sql, $params);
+        $users = $DB->get_records_sql($roleassignsql, $params);
 
         return $users;
     }
@@ -295,5 +328,28 @@ class block_teaching_team extends block_base {
         $profiledata = $DB->get_records_sql($sql, $params);
 
         return $profiledata;
+    }
+
+
+    protected function get_user_groups($groupingname, $courseid, $userid) {
+        global $DB;
+
+        $groupidsql = 'SELECT 
+                           g.id
+                        FROM
+                            {groups_members} gm
+                                LEFT JOIN
+                            {groups} g ON gm.groupid = g.id
+                                LEFT JOIN
+                            {groupings_groups} gg on g.id = gg.groupid               
+                                LEFT JOIN 
+                            {groupings} gs on gg.groupingid = gs.id    
+                        WHERE
+                             gs.name = ? AND g.courseid = ? AND gm.userid = ?';
+
+        $groupids = $DB->get_records_sql($groupidsql, array($groupingname, $courseid, $userid));
+        
+        return $groupids;
+
     }
 }
