@@ -174,7 +174,7 @@ class block_teaching_team extends block_base {
         list($roleassigninsql,
             $params) = $DB->get_in_or_equal($roleid, SQL_PARAMS_NAMED);
 
-        $roleassignsql = 'SELECT ra.id, ra.roleid AS roleid, u.id, u.firstname, u.lastname FROM {role_assignments} ra LEFT JOIN {user} u on ra.userid = u.id LEFT JOIN {groups_members} gm ON u.id = gm.userid WHERE ra.contextid = '.$context->id.' AND ra.roleid ';
+        $roleassignsql = 'SELECT ra.id, ra.roleid AS roleid, u.id, u.firstname, u.lastname, u.email, u.maildisplay FROM {role_assignments} ra LEFT JOIN {user} u on ra.userid = u.id LEFT JOIN {groups_members} gm ON u.id = gm.userid WHERE ra.contextid = '.$context->id.' AND ra.roleid ';
 
         $roleassignsql .= $roleassigninsql;
 
