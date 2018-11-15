@@ -45,3 +45,13 @@
 .block_teaching_team .user_profile .user_details .detail.email a {
     color: #2f2f2f;
 }
+
+/* Temp fix until converted to plugin */
+#page-blocks-teaching_team-course #region-main .card-block {
+    display: inline;
+    padding: 0;
+    border: none;
+}
+#page-blocks-teaching_team-course [data-region="blocks-column"] {
+    width: 100% !important;
+}
