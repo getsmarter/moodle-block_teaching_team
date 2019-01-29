@@ -68,3 +68,8 @@
     float: left !important;
 }
 
+@media only screen and (max-width: 500px) { /*make user profile span entire column up to 500px*/
+    #page-blocks-teaching_team-course .teaching_team .user_profile {
+        width:210px;
+    }
+}
