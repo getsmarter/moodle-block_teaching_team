@@ -55,3 +55,16 @@
 #page-blocks-teaching_team-course [data-region="blocks-column"] {
     width: 100% !important;
 }
+
+.block_teaching_team .teaching_team {
+    width: 95%;
+    float: left;
+    text-align: center;
+    max-width:100%;
+}
+
+#page-blocks-teaching_team-course .block_teaching_team .card-title {
+    font-size: 36px !important;
+    float: left !important;
+}
+
