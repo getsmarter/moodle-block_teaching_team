@@ -24,6 +24,7 @@
 
 $string['teaching_team:addinstance'] = 'Add a new Teaching Team block';
 $string['pluginname'] = 'Teaching Team';
+$string['pluginpagetitle'] = ': Support Team';
 
 $string['default_settings_heading'] = 'Default Settings';
 $string['default_settings_heading_desc'] = 'These settings will be used as defaults when creating new Teaching Team blocks.';
