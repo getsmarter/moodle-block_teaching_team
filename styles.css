@@ -66,6 +66,7 @@
 #page-blocks-teaching_team-course .block_teaching_team .card-title {
     font-size: 36px !important;
     float: left !important;
+    text-align: left;
 }
 
 @media only screen and (max-width: 500px) { /*make user profile span entire column up to 500px*/
