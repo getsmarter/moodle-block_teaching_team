@@ -51,7 +51,7 @@ class block_teaching_team extends block_base {
      * Check block formats
      */
     public function applicable_formats() {
-        return array('course' => true);
+        return array('course' => true, 'blocks-teaching_team-course' => true);
     }
 
     /**
