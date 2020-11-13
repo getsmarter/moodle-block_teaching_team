@@ -66,3 +66,6 @@ $string['no_user'] = 'None';
 
 $string['grouping_header'] = 'Common module settings';
 $string['user_has_no_group'] = 'Contact your Global Success team {number + email} if your teaching team is not displaying';
+
+$string['contact_us_form_heading'] = 'Contact Us Form settings';
+$string['contact_us_form_enable'] = 'Enable Contact Us form';

@@ -1,0 +1,18 @@
+<table id="formroletypes">
+    <thead>
+        <tr>
+            <td>From</td>
+            <td>Salesforce <b>Endpoint</b></td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+            <tr>
+                <td>{{name}}</td>
+                <td><a href="{{salesforceapi}}">{{salesforceapi}}</a></td>
+                <td>Edit / Delete</td>
+            </tr>
+        {{/records}}
+    </tbody>
+</table>

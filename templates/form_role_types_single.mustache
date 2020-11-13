@@ -1,0 +1,10 @@
+<form action='add_from_role_type' method='post' id=add_contact_us_form>
+    <select name='fromroleid' id='fromroleid' required>
+        <option value=''>--Please choose an option--</option>
+        {{#availableroles}}
+            <option value={{id}}>{{shortname}}</option>
+        {{/availableroles}}
+    </select>
+    <input type='url' name='salesforceapi' id='salesforceapi' required>
+    <input type='submit' value='Submit'>
+</form>

@@ -96,4 +96,16 @@ if ($ADMIN->fulltree) {
     $default = '';
     $setting = new admin_setting_configtext($name, $title, $description, $default);
     $settings->add($setting);
+
+    // Contact us form settings
+    $name = 'block_teaching_team/contact_us_form_heading';
+    $heading = get_string('contact_us_form_heading', 'block_teaching_team');
+    $information = '';
+    $settings->add(new admin_setting_heading($name, $heading, $information));
+
+    $name = 'block_teaching_team/contact_us_form_enable';
+    $title = get_string('contact_us_form_enable', 'block_teaching_team');
+    $description = '';
+    $default = false;
+    $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));    
 }

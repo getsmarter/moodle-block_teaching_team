@@ -1,0 +1,18 @@
+<table id="dropdownvalues">
+    <thead>
+        <tr>
+            <td>Sender View</td>
+            <td>Salesforce Mapping</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+            <tr>
+                <td>{{formreason}}</td>
+                <td>{{sfmapping}}</td>
+                <td>Edit / Delete</td>
+            </tr>
+        {{/records}}
+    </tbody>
+</table>
