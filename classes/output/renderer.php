@@ -28,6 +28,7 @@ use plugin_renderer_base;
 use block_teaching_team\output\form_role_types;
 use block_teaching_team\output\form_role_types_single;
 use block_teaching_team\output\dropdown_values;
+use block_teaching_team\output\contactusform;
 
 class renderer extends plugin_renderer_base {
     /**
@@ -61,5 +62,16 @@ class renderer extends plugin_renderer_base {
     protected function render_form_role_types_single(form_role_types_single $formroletypessingle) {
         $data = $formroletypessingle->export_for_template($this);
         return parent::render_from_template('block_teaching_team/form_role_types_single', $data);
+    }
+
+    /**
+     * Defer to template.
+     *
+     * @param block_teaching_team\output\contactusform $formroletypes
+     * @return string HTML
+     */
+    protected function render_contactusform(contactusform $contactusform) {
+        $data = $contactusform->export_for_template($this);
+        return parent::render_from_template('block_teaching_team/contactusform', $data);
     }
 }

@@ -69,3 +69,7 @@ $string['user_has_no_group'] = 'Contact your Global Success team {number + email
 
 $string['contact_us_form_heading'] = 'Contact Us Form settings';
 $string['contact_us_form_enable'] = 'Enable Contact Us form';
+$string['contact_us_form_page_heading'] = 'Contact Us Form';
+$string['contact_us_form_page_title'] = 'Contact Us Form';
+$string['contact_us_form_page_add_form_for_role_type'] = 'Create new form for role type';
+$string['contact_us_form_page_add_new_dropdown_value'] = 'Add new dropdown vale';

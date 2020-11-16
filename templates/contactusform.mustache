@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-12">
+        <h1>{{title}}</h1>
+    </div>
+    {{! Wrapping in divs as JS finds the table according to the button parent}}
+    <div class="col-12">
+        <h2>Contact Us Form settings</h2>
+        <button
+            class="btn"
+            id="addfromroletype"
+            onclick="add_from_role_type()"
+        >
+            Create new form for role type
+        </button>
+        {{{formroletypes}}}
+    </div>
+    <div class="col-12">
+        <h2>Dropdown Values</h2>
+        {{{dropdownvalues}}}
+        <button
+            class="btn"
+            id="addformdropdown"
+            onclick="add_form_dropdown()"
+        >
+            Add new dropdown value
+        </button>
+        {{{js}}}
+    </div>
+</div>
