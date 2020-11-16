@@ -72,14 +72,14 @@ function registeraddfromroletype($ajaxurl) {
 
     $script = '
         window.add_from_role_type = function() {
-            event = event || window.event;
-            let addButton = event.target;
+            let localEvent = event || window.event;
+            let addButton = localEvent.target;
             $(addButton).prop("disabled", true);
 
             // ===========================================
             // Adding form - NBNB assumption here is that the add button will be the next sibling of the table.
             // ===========================================
-            let table = $(addButton).parent().find("table")[0];
+            let table = $(\'#formroletypes\')[0];
             if (table !== undefined) {
                 let formContainer = document.createElement("div");
                 formContainer.innerHTML = unescape('.$html.');
@@ -107,7 +107,7 @@ function registeraddfromroletype($ajaxurl) {
                     $.ajax({
                         type: "POST",
                         url: "'.$ajaxurl.'",
-                        data: { 
+                        data: {
                             "action": $form.attr("action"), params
                         },
                         success: (response) => {
@@ -148,14 +148,14 @@ function registeraddformdropdown($ajaxurl) {
 
     $script = '
         window.add_form_dropdown = function() {
-            event = event || window.event;
-            let addButton = event.target;
+            let localEvent = event || window.event;
+            let addButton = localEvent.target;
             $(addButton).prop("disabled", true);
 
             // ===========================================
             // Adding form - NBNB assumption here is that the add button will be the next sibling of the table
             // ===========================================
-            let table = $(addButton).parent().find("table")[0];
+            let table = $(\'#dropdownvalues\')[0];
             if (table !== undefined) {
                 let formContainer = document.createElement("div");
                 formContainer.innerHTML = unescape('.$html.');
@@ -183,7 +183,7 @@ function registeraddformdropdown($ajaxurl) {
                     $.ajax({
                         type: "POST",
                         url: "'.$ajaxurl.'",
-                        data: { 
+                        data: {
                             "action": $form.attr("action"), params
                         },
                         success: (response) => {
@@ -223,7 +223,7 @@ function getavailcontactusconfig() {
     try {
         $sql = "SELECT id, shortname
                     FROM {role} r
-                    WHERE r.id 
+                    WHERE r.id
                     NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)";
 
         $roles = $DB->get_records_sql($sql);
