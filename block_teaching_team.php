@@ -130,12 +130,15 @@ class block_teaching_team extends block_base {
 
         foreach ($userroles as $userrole) {
             if (in_array($userrole->roleid, $mappings)) {
+                $url = new moodle_url('/blocks/teaching_team/contact_us.php', [
+                    'courseid' => $courseid
+                ]);
                 $this->content->text .= html_writer::start_tag('div');
                 $this->content->text .= html_writer::tag(
                     'a',
                     get_string('contact_us_form_support_page_link', 'block_teaching_team'),
                     [
-                        'href' => '/blocks/teaching_team/contact_us.php',
+                        'href' => $url,
                         'class' => 'btn btn-primary mx-auto'
                     ]
                 );

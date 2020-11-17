@@ -1,0 +1,43 @@
+<div class="row">
+    <h1 class="col-12">{{title}}</h1>
+    <div class="col-12">
+        <form action="" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="context" id="reasonlabel">{{reasonlabel}}</label>
+                <select
+                    name="formreason"
+                    id="formreason"
+                    class="form-control"
+                    aria-labelledby="reasonlabel"
+                >
+                    {{#reasons}}
+                        <option value="{{id}}">{{formreason}}</option>
+                    {{/reasons}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="context" id="contextlabel">{{contextlabel}}</label>
+                <textarea
+                    name="context"
+                    id="context"
+                    cols="30"
+                    rows="10"
+                    class="form-control"
+                    aria-labelledby="contextlabel"
+                ></textarea>
+            </div>
+            <div class="form-group">
+                <input
+                    type="file"
+                    name="attachment"
+                    id="attachment"
+                    aria-label="Upload an attachment"
+                >
+            </div>
+            <div>
+                <a href="{{cancelurl}}" class="btn btn-primary float-right ml-3">Cancel</a>
+                <button type="submit" class="btn btn-primary float-right btn-sm ml-0 mb-0">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
