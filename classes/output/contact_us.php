@@ -23,6 +23,7 @@
  */
 namespace block_teaching_team\output;
 
+use dml_exception;
 use moodle_url;
 use renderer_base;
 use stdClass;
@@ -51,6 +52,10 @@ class contact_us implements \renderable, \templatable {
         return $data;
     }
 
+    /**
+     * Function to get the mappings
+     * @return array
+     */
     public function get_reasons() {
         global $DB;
 
