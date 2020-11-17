@@ -59,7 +59,6 @@ class contact_us implements \renderable, \templatable {
     public function get_reasons() {
         global $DB;
 
-        $results = $DB->get_records('gs_contactus_mappings', null, '', 'id, formreason');
-        return array_values($results);
+        return array_values($DB->get_records('gs_contactus_mappings', null, '', 'id, formreason'));
     }
 }
