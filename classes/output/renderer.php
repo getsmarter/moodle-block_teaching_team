@@ -29,6 +29,7 @@ use block_teaching_team\output\form_role_types;
 use block_teaching_team\output\form_role_types_single;
 use block_teaching_team\output\dropdown_values;
 use block_teaching_team\output\contactusform;
+use block_teaching_team\output\contact_us;
 
 class renderer extends plugin_renderer_base {
     /**
@@ -73,5 +74,16 @@ class renderer extends plugin_renderer_base {
     protected function render_contactusform(contactusform $contactusform) {
         $data = $contactusform->export_for_template($this);
         return parent::render_from_template('block_teaching_team/contactusform', $data);
+    }
+
+    /**
+     * Defer to template.
+     *
+     * @param block_teaching_team\output\contact_us $formroletypes
+     * @return string HTML
+     */
+    protected function render_contact_us(contact_us $contactus) {
+        $data = $contactus->export_for_template($this);
+        return parent::render_from_template('block_teaching_team/contact_us', $data);
     }
 }
