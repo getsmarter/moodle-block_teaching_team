@@ -49,7 +49,7 @@ class form_role_types implements \renderable, \templatable {
     public function get_data() {
         global $DB;
         $sql = '
-            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, r.name AS name
+            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name
             FROM {gs_contactus_config} AS gscc
             INNER JOIN {user} AS u ON u.id = gscc.userid
             INNER JOIN {role} AS r ON r.id = gscc.fromroleid;
