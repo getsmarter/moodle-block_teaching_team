@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderable and templatable for dropdown values.
+ * Renderable and templatable for contact us page.
  *
  * @package   block_teaching_team
  * @copyright Brendon Pretorius <bpretorius@2u.com>
