@@ -78,3 +78,4 @@ $string['contact_us_page_heading'] = 'Contact Support Team';
 $string['contact_us_page_title'] = 'Contact Support Team';
 $string['contact_us_reason_label'] = 'I need assistance with:';
 $string['contact_us_context_label'] = 'Please provide us with any context that would be helpful';
+$string['contact_us_form_support_help_link'] = 'Visit Help Center';
