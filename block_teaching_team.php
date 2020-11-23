@@ -128,10 +128,6 @@ class block_teaching_team extends block_base {
         $userroles = get_user_roles($context, $USER->id);
         $mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
         $configcontactformenabled = get_config('block_teaching_team');
-        $contactformenabled = false;
-        if (!empty($configcontactformenabled->contact_us_form_enable)) {
-            $contactformenabled = true;
-        }
 
         foreach ($userroles as $userrole) {
             if (in_array($userrole->roleid, $mappings)) {
@@ -139,7 +135,7 @@ class block_teaching_team extends block_base {
                     'courseid' => $courseid
                 ]);
                 $this->content->text .= html_writer::start_tag('div');
-                if ($contactformenabled) {
+                if (!empty($configcontactformenabled->contact_us_form_enable)) {
                     $this->content->text .= html_writer::tag(
                         'a',
                         get_string('contact_us_form_support_page_link', 'block_teaching_team'),

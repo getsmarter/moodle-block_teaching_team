@@ -45,13 +45,9 @@ foreach ($userroles as $userrole) {
     }
 }
 $configcontactformenabled = get_config('block_teaching_team');
-$contactformenabled = false;
-if (!empty($configcontactformenabled->contact_us_form_enable)) {
-    $contactformenabled = true;
-}
 
 // Redirect if not exist.
-if (!$mappingexists || !$contactformenabled) {
+if (!$mappingexists || empty($configcontactformenabled->contact_us_form_enable)) {
     redirect($url);
 }
 
