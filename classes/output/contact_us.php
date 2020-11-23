@@ -33,8 +33,11 @@ defined('MOODLE_INTERNAL') || die();
 class contact_us implements \renderable, \templatable {
     /** @param string $cancelurl */
     private $cancelurl;
-    public function __construct($cancelurl = '') {
+    /** @param int $userrole */
+    private $userroleid;
+    public function __construct($userroleid, $cancelurl = '') {
         $this->cancelurl = $cancelurl;
+        $this->userroleid = $userroleid;
     }
 
     /**
@@ -58,7 +61,9 @@ class contact_us implements \renderable, \templatable {
      */
     public function get_reasons() {
         global $DB;
-
-        return array_values($DB->get_records('gs_contactus_mappings', null, '', 'id, formreason'));
+        $result = $DB->get_record('gs_contactus_config', ['fromroleid' => $this->userroleid]);
+        $sql = "SELECT id, formreason FROM {gs_contactus_mappings} WHERE id ";
+        list($insql, $params) = $DB->get_in_or_equal(explode(',', $result->senderviewids));
+        return array_values($DB->get_records_sql($sql . $insql, $params));
     }
 }

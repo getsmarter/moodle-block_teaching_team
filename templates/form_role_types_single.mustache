@@ -6,5 +6,10 @@
         {{/availableroles}}
     </select>
     <input type='url' name='salesforceapi' id='salesforceapi' required>
+    <select name="senderviewids" id="senderviewids" multiple>
+        {{#senderviews}}
+            <option value="{{id}}">{{formreason}}</option>
+        {{/senderviews}}
+    </select>
     <input type='submit' value='Submit'>
 </form>
