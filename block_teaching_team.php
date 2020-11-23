@@ -127,6 +127,7 @@ class block_teaching_team extends block_base {
         $context = context_course::instance($courseid);
         $userroles = get_user_roles($context, $USER->id);
         $mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
+        $configcontactformenabled = get_config('block_teaching_team');
 
         foreach ($userroles as $userrole) {
             if (in_array($userrole->roleid, $mappings)) {
@@ -134,14 +135,16 @@ class block_teaching_team extends block_base {
                     'courseid' => $courseid
                 ]);
                 $this->content->text .= html_writer::start_tag('div');
-                $this->content->text .= html_writer::tag(
-                    'a',
-                    get_string('contact_us_form_support_page_link', 'block_teaching_team'),
-                    [
-                        'href' => $url,
-                        'class' => 'btn btn-primary mx-auto'
-                    ]
-                );
+                if (!empty($configcontactformenabled->contact_us_form_enable)) {
+                    $this->content->text .= html_writer::tag(
+                        'a',
+                        get_string('contact_us_form_support_page_link', 'block_teaching_team'),
+                        [
+                            'href' => $url,
+                            'class' => 'btn btn-primary mx-auto'
+                        ]
+                    );
+                }
                 $this->content->text .= html_writer::tag(
                     'button',
                     get_string('contact_us_form_support_help_link', 'block_teaching_team'),
@@ -150,7 +153,7 @@ class block_teaching_team extends block_base {
                         'style' => 'margin-left: 4px; margin-top: 9px; line-height: 24px; font-weight: 600; font-size: 12px',
                         'onclick' => 'window._elev.openHome();'
                     ]
-                );                
+                );
                 $this->content->text .= html_writer::end_tag('div');
             }
         }
