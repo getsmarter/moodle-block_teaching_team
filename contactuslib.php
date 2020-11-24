@@ -278,7 +278,7 @@ function registercancelclick($ajaxurl) {
         this.targetfoo = target;
         let row = $(target).parents("tr");
         let rowspans = row.find("span")
-        row.find("option:visible").each(function() {
+        row.find("select:visible option").each(function() {
             $(this).prop("selected", $(this).data("selected") ?? false);
         });
         rowspans.find("input").each(function() {
