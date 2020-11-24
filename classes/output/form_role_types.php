@@ -49,13 +49,20 @@ class form_role_types implements \renderable, \templatable {
     public function get_data() {
         global $DB;
         $sql = '
-            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name
+            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name, gscc.senderviewids
             FROM {gs_contactus_config} AS gscc
             INNER JOIN {user} AS u ON u.id = gscc.userid
             INNER JOIN {role} AS r ON r.id = gscc.fromroleid;
         ';
 
         $results = $DB->get_records_sql($sql);
+        $sql = "SELECT id, formreason FROM {gs_contactus_mappings} WHERE id ";
+
+        foreach ($results as &$result) {
+            list($insql, $params) = $DB->get_in_or_equal(explode(',', $result->senderviewids));
+            $result->senderviews = array_values($DB->get_records_sql($sql . $insql, $params));
+        }
+
         // Cast object to array.
         return array_values(json_decode(json_encode($results), true));
     }

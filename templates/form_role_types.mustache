@@ -4,6 +4,7 @@
         <tr>
             <th scope="col">From</th>
             <th scope="col">Salesforce Endpoint</th>
+            <th scope="col">Sender Views</th>
             <th scope="col">Action</th>
         </tr>
     </thead>
@@ -12,6 +13,13 @@
             <tr>
                 <td>{{name}}</td>
                 <td><a href="{{salesforceapi}}">{{salesforceapi}}</a></td>
+                <td>
+                    <select name="" id="" disabled="disabled" multiple>
+                        {{#senderviews}}
+                            <option value="{{id}}">{{formreason}}</option>
+                        {{/senderviews}}
+                    </select>
+                </td>
                 <td>Edit / Delete</td>
             </tr>
         {{/records}}

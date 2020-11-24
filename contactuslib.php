@@ -98,7 +98,8 @@ function registeraddfromroletype($ajaxurl) {
                     let params = {
                         "userid": '.$USER->id.',
                         "fromroleid": $("#fromroleid").val(),
-                        "salesforceapi": encodeURI($("#salesforceapi").val().trim())
+                        "salesforceapi": encodeURI($("#salesforceapi").val().trim()),
+                        "senderviewids": $("#senderviewids").val().join()
                     }
 
                     // ===========================================

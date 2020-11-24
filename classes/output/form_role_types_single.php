@@ -38,7 +38,7 @@ class form_role_types_single implements \renderable, \templatable {
     public function export_for_template($output) {
         $data = new \stdClass();
         // Reindex (so mustache can iterate correctly) and assign.
-        $data->availableroles = $this->get_data();
+        list($data->availableroles, $data->senderviews) = $this->get_data();
         return $data;
     }
 
@@ -51,11 +51,26 @@ class form_role_types_single implements \renderable, \templatable {
 
         $sql = "SELECT id, shortname
                         FROM {role} r
-                        WHERE r.id 
+                        WHERE r.id
                         NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)";
 
-        $availableroles = $DB->get_records_sql($sql);
-        // Cast object to array.
-        return array_values(json_decode(json_encode($availableroles), true));
+    // Cast object to array.
+        $availableroles = array_values(
+            json_decode(
+                json_encode(
+                    $DB->get_records_sql($sql)
+                ),
+                true
+            )
+        );
+        $senderviews = array_values(
+            json_decode(
+                json_encode(
+                    $DB->get_records('gs_contactus_mappings', null, '', 'id, formreason')
+                ),
+                true
+            )
+        );
+        return [$availableroles, $senderviews];
     }
 }

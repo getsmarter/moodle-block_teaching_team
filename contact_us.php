@@ -31,19 +31,18 @@ require_login();
 // Safety check to see if role configured.
 $courseid = required_param('courseid', PARAM_INT);
 $context = context_course::instance($courseid);
-$userroles = get_user_roles($context, $USER->id);
+$userrole = current(get_user_roles($context, $USER->id))->roleid;
+
 $mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
 $mappingexists = false;
 $url = new moodle_url('/blocks/teaching_team/course.php', [
     'courseid' => $courseid
 ]);
 
-foreach ($userroles as $userrole) {
-    if (in_array($userrole->roleid, $mappings)) {
-        $mappingexists = true;
-        break;
-    }
+if (in_array($userrole, $mappings)) {
+    $mappingexists = true;
 }
+
 $configcontactformenabled = get_config('block_teaching_team');
 
 // Redirect if not exist.
@@ -52,7 +51,7 @@ if (!$mappingexists || empty($configcontactformenabled->contact_us_form_enable))
 }
 
 $output = $PAGE->get_renderer('block_teaching_team');
-$form = new contact_us($url);
+$form = new contact_us($userrole, $url);
 
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('admin');
