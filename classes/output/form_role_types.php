@@ -58,12 +58,30 @@ class form_role_types implements \renderable, \templatable {
         $results = $DB->get_records_sql($sql);
         $sql = "SELECT id, formreason FROM {gs_contactus_mappings} WHERE id ";
 
+        $allsenderviews = $this->get_all_sender_views();
+
         foreach ($results as &$result) {
             list($insql, $params) = $DB->get_in_or_equal(explode(',', $result->senderviewids));
             $result->senderviews = array_values($DB->get_records_sql($sql . $insql, $params));
+            $result->allsenderviews = $allsenderviews;
+
+            // Add flag to allow pre-selecting on FE
+            foreach ($result->senderviews as $senderview) {
+                foreach ($result->allsenderviews as &$allsenderview) {
+                    $allsenderview->selected = $allsenderview->selected || $allsenderview->id == $senderview->id;
+                }
+            }
         }
 
         // Cast object to array.
         return array_values(json_decode(json_encode($results), true));
+    }
+
+    public function get_all_sender_views() {
+        global $DB;
+
+        $results = $DB->get_records('gs_contactus_mappings', null, '', 'id, formreason');
+        // Cast object to array.
+        return array_values($results);
     }
 }

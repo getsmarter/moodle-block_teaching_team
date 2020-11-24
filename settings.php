@@ -107,5 +107,5 @@ if ($ADMIN->fulltree) {
     $title = get_string('contact_us_form_enable', 'block_teaching_team');
     $description = '';
     $default = false;
-    $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));    
+    $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));
 }

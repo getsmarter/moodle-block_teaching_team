@@ -53,6 +53,10 @@ function addcontactusjs() {
     $script = '<script type="text/javascript">
         '. registeraddfromroletype($ajaxurl) .'
         '. registeraddformdropdown($ajaxurl) .'
+        '. registereditclick() .'
+        '. registerdeleteclick($ajaxurl) .'
+        '. registercancelclick($ajaxurl) .'
+        '. registersaveclick($ajaxurl) .'
     </script>';
 
     return $script;
@@ -233,4 +237,56 @@ function getavailcontactusconfig() {
     }
 
     return $roles;
+}
+
+function registereditclick() {
+    $script = 'window.edit_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+        let targetrow = $(target).parents("tr");
+        targetrow.find("span").toggleClass("hidden");
+    }';
+
+    return $script;
+}
+
+function registerdeleteclick($ajaxurl) {
+    $script = 'window.delete_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+
+        alert("delete");
+    }';
+
+    return $script;
+}
+
+function registersaveclick($ajaxurl) {
+    $script = 'window.save_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+
+        alert("save");
+    }';
+
+    return $script;
+}
+function registercancelclick($ajaxurl) {
+    $script = 'window.cancel_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+        this.targetfoo = target;
+        let row = $(target).parents("tr");
+        let rowspans = row.find("span")
+        row.find("option:visible").each(function() {
+            $(this).prop("selected", $(this).data("selected") ?? false);
+        });
+        rowspans.find("input").each(function() {
+            let originaltext = $(this).data("originaltext");
+            $(this).val(originaltext);
+        });
+        rowspans.toggleClass("hidden");
+    }';
+
+    return $script;
 }
