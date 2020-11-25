@@ -80,10 +80,6 @@ class form_role_types implements \renderable, \templatable {
             }
         }
 
-        // echo "<pre>";
-        // var_dump($results);
-        // exit;
-
         // Cast object to array.
         return array_values(json_decode(json_encode($results), true));
     }

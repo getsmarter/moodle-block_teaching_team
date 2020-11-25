@@ -55,7 +55,7 @@ function addcontactusjs() {
         '. registeraddformdropdown($ajaxurl) .'
         '. registereditclick() .'
         '. registerdeleteclick($ajaxurl) .'
-        '. registercancelclick($ajaxurl) .'
+        '. registercancelclick() .'
         '. registersaveclick($ajaxurl) .'
     </script>';
 
@@ -252,30 +252,107 @@ function registereditclick() {
 
 function registerdeleteclick($ajaxurl) {
     $script = 'window.delete_click = function() {
-        let localEvent = event || window.event;
-        let target = localEvent.target;
+        let confirmation = confirm("Delete?");
+        if (confirmation === true) {
+            let localEvent = event || window.event;
+            let target = localEvent.target;
+            let entityid = $(target).parents("tr").find("input[type=\'hidden\']").val();
+            let params = {
+                id: entityid
+            };
+            $.ajax({
+                type: "POST",
+                url: "'.$ajaxurl.'",
+                data: {
+                    "action": $(target).data("action"), params
+                },
+                success: (response) => {
+                    let responseParsed = response;
+                    if (typeof response !== "object") {
+                        responseParsed = JSON.parse(response);
+                    };
 
-        alert("delete");
+                    if (responseParsed.error) {
+                        throw responseParsed.error
+                    }
+
+                    if (responseParsed.success == 200) {
+                        location.reload();
+                    }
+                },
+                error: (response) => {
+                    throw repsonse;
+                }
+            });
+        }
     }';
 
     return $script;
 }
 
 function registersaveclick($ajaxurl) {
+    global $USER;
     $script = 'window.save_click = function() {
         let localEvent = event || window.event;
         let target = localEvent.target;
+        let params;
+        let action = $(target).data("action");
+        let row = $(target).parents("tr");
+        switch (action) {
+            case "edit_from_role_type":
+                params = {
+                    "userid": '.$USER->id.',
+                    "id": row.find("input[name=\'id\']").val(),
+                    "fromroleid": row.find("select[name=\'fromroleid\']").val(),
+                    "salesforceapi": encodeURI(row.find("input[name=\'salesforceapi\']").val().trim()),
+                    "senderviewids": row.find("select[name=\'senderviewids\']").val().join()
+                }
+                break;
+            case "edit_form_dropdown":
+                params = {
+                    "userid": '.$USER->id.',
+                    "id": row.find("input[name=\'id\']").val(),
+                    "formreason": row.find("input[name=\'formreason\']").val(),
+                    "sfmapping": row.find("input[name=\'sfmapping\']").val().trim()
+                }
+                break;
+            default:
+                throw "Unrecognised action"
+                break;
+        }
 
-        alert("save");
+        $.ajax({
+            type: "POST",
+            url: "'.$ajaxurl.'",
+            data: {
+                "action": action, params
+            },
+            success: (response) => {
+                let responseParsed = response;
+                if (typeof response !== "object") {
+                    responseParsed = JSON.parse(response);
+                };
+
+                if (responseParsed.error) {
+                    throw responseParsed.error
+                }
+
+                if (responseParsed.success == 200) {
+                    location.reload();
+                }
+            },
+            error: (response) => {
+                throw repsonse;
+            }
+        });
     }';
 
     return $script;
 }
-function registercancelclick($ajaxurl) {
+function registercancelclick() {
     $script = 'window.cancel_click = function() {
         let localEvent = event || window.event;
         let target = localEvent.target;
-        this.targetfoo = target;
         let row = $(target).parents("tr");
         let rowspans = row.find("span")
         row.find("select:visible option").each(function() {

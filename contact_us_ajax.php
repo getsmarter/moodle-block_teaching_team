@@ -35,6 +35,26 @@ switch ($action) {
             $result['message'] = "Could not insert record";
         }
         break;
+    case 'edit_from_role_type':
+        try {
+            $record = $DB->update_record('gs_contactus_config', $params, true);
+            $result['success'] = 200;
+            $result['id'] = $record;
+        } catch (\Exception $e) {
+            $result['success'] = 500;
+            $result['message'] = "Could not update record";
+        }
+    break;
+    case 'delete_from_role_type':
+        try {
+            $record = $DB->delete_records('gs_contactus_config', $params, true);
+            $result['success'] = 200;
+            $result['id'] = $record;
+        } catch (\Exception $e) {
+            $result['success'] = 500;
+            $result['message'] = "Could not delete record";
+        }
+        break;
     case 'add_form_dropdown':
         try {
             $record = $DB->insert_record('gs_contactus_mappings', $params, true);
@@ -43,6 +63,26 @@ switch ($action) {
         } catch (\Exception $e) {
             $result['success'] = 500;
             $result['message'] = "Could not insert record";
+        }
+        break;
+    case 'edit_form_dropdown':
+        try {
+            $record = $DB->update_record('gs_contactus_mappings', $params, true);
+            $result['success'] = 200;
+            $result['id'] = $record;
+        } catch (\Exception $e) {
+            $result['success'] = 500;
+            $result['message'] = $e->getMessage();
+        }
+        break;
+    case 'delete_form_dropdown':
+        try {
+            $record = $DB->delete_records('gs_contactus_mappings', $params, true);
+            $result['success'] = 200;
+            $result['id'] = $record;
+        } catch (\Exception $e) {
+            $result['success'] = 500;
+            $result['message'] = "Could not delete record";
         }
         break;
     default:

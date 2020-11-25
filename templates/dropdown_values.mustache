@@ -42,9 +42,21 @@
                 </td>
                 <td>
                     <span class="action edit" onclick="edit_click()">Edit</span>
-                    <span class="action save hidden" onclick="save_click()">Save</span>
+                    <span
+                        class="action save hidden"
+                        onclick="save_click()"
+                        data-action="edit_form_dropdown"
+                    >
+                        Save
+                    </span>
                     /
-                    <span class="action delete" onclick="delete_click()">Delete</span>
+                    <span
+                        class="action delete"
+                        onclick="delete_click()"
+                        data-action="delete_form_dropdown"
+                    >
+                        Delete
+                    </span>
                     <span class="action cancel hidden" onclick="cancel_click()">Cancel</span>
                 </td>
             </tr>
