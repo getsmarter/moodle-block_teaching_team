@@ -49,7 +49,8 @@ class form_role_types implements \renderable, \templatable {
     public function get_data() {
         global $DB;
         $sql = '
-            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name, r.id as roleid, gscc.senderviewids
+            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name,
+                r.id as roleid, gscc.senderviewids
             FROM {gs_contactus_config} AS gscc
             INNER JOIN {user} AS u ON u.id = gscc.userid
             INNER JOIN {role} AS r ON r.id = gscc.fromroleid;
@@ -66,7 +67,7 @@ class form_role_types implements \renderable, \templatable {
             $result->senderviews = array_values($DB->get_records_sql($sql . $insql, $params));
             $result->allsenderviews = $allsenderviews;
 
-            // Add flag to allow pre-selecting on FE
+            // Add flag to allow pre-selecting on FE.
             foreach ($result->senderviews as $senderview) {
                 foreach ($result->allsenderviews as &$allsenderview) {
                     $allsenderview->selected = $allsenderview->selected || $allsenderview->id == $senderview->id;
@@ -74,7 +75,7 @@ class form_role_types implements \renderable, \templatable {
             }
 
             $result->allroles = $allroles;
-            // Add flag to allow pre-selecting on FE
+            // Add flag to allow pre-selecting on FE.
             foreach ($result->allroles as &$role) {
                 $role->selected = $role->id == $result->roleid;
             }
