@@ -71,7 +71,7 @@ class form_role_types implements \renderable, \templatable {
                 }
             }
 
-            $result->allroles = $this->get_all_roles();
+            $result->allroles = $this->get_all_roles($result->roleid);
             // Add flag to allow pre-selecting on FE.
             foreach ($result->allroles as &$role) {
                 $role->selected = $role->id == $result->roleid;
@@ -97,13 +97,15 @@ class form_role_types implements \renderable, \templatable {
      * Function to get all roles
      * @return array
      */
-    public function get_all_roles() {
+    public function get_all_roles($currentroleid) {
         global $DB;
         $sql = "SELECT id, shortname
             FROM {role} r
             WHERE r.id
-            NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)";
-        $results = $DB->get_records_sql($sql);
+            NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)
+            OR r.id = ?
+        ";
+        $results = $DB->get_records_sql($sql, [$currentroleid]);
         return array_values($results);
     }
 }
