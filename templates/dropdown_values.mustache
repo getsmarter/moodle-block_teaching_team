@@ -2,6 +2,7 @@
     <caption class="small pt-0 pb-0">The following dropdown values are available</caption>
     <thead>
         <tr>
+            <th scope="col" class="hidden" aria-hidden="true">id</th>
             <th scope="col">Sender View</th>
             <th scope="col">Salesforce Mapping</th>
             <th scope="col">Action</th>
@@ -10,9 +11,54 @@
     <tbody>
         {{#records}}
             <tr>
-                <td>{{formreason}}</td>
-                <td>{{sfmapping}}</td>
-                <td>Edit / Delete</td>
+                <td class="hidden" aria-hidden="true">
+                    <input type="hidden" name="id" value="{{id}}">
+                </td>
+                <td>
+                    <span>
+                        {{formreason}}
+                    </span>
+                    <span class="hidden">
+                        <input
+                            type="text"
+                            name="formreason"
+                            value="{{formreason}}"
+                            data-originaltext="{{formreason}}"
+                        >
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        {{sfmapping}}
+                    </span>
+                    <span class="hidden">
+                        <input
+                            type="text"
+                            name="sfmapping"
+                            value="{{sfmapping}}"
+                            data-originaltext="{{sfmapping}}"
+                        >
+                    </span>
+                </td>
+                <td>
+                    <span class="action edit" onclick="edit_click()">Edit</span>
+                    <span
+                        class="action save hidden"
+                        onclick="save_click()"
+                        data-action="edit_form_dropdown"
+                    >
+                        Save
+                    </span>
+                    /
+                    <span
+                        class="action delete"
+                        onclick="delete_click()"
+                        data-action="delete_form_dropdown"
+                    >
+                        Delete
+                    </span>
+                    <span class="action cancel hidden" onclick="cancel_click()">Cancel</span>
+                </td>
             </tr>
         {{/records}}
     </tbody>

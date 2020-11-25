@@ -49,7 +49,8 @@ class form_role_types implements \renderable, \templatable {
     public function get_data() {
         global $DB;
         $sql = '
-            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name, gscc.senderviewids
+            SELECT gscc.id , gscc.salesforceapi AS salesforceapi, IF(r.name <> \'\', r.name, r.shortname) AS name,
+                r.id as roleid, gscc.senderviewids
             FROM {gs_contactus_config} AS gscc
             INNER JOIN {user} AS u ON u.id = gscc.userid
             INNER JOIN {role} AS r ON r.id = gscc.fromroleid;
@@ -58,12 +59,51 @@ class form_role_types implements \renderable, \templatable {
         $results = $DB->get_records_sql($sql);
         $sql = "SELECT id, formreason FROM {gs_contactus_mappings} WHERE id ";
 
+        $allsenderviews = $this->get_all_sender_views();
+        $allroles = $this->get_all_roles();
+
         foreach ($results as &$result) {
             list($insql, $params) = $DB->get_in_or_equal(explode(',', $result->senderviewids));
             $result->senderviews = array_values($DB->get_records_sql($sql . $insql, $params));
+            $result->allsenderviews = $allsenderviews;
+
+            // Add flag to allow pre-selecting on FE.
+            foreach ($result->senderviews as $senderview) {
+                foreach ($result->allsenderviews as &$allsenderview) {
+                    $allsenderview->selected = $allsenderview->selected || $allsenderview->id == $senderview->id;
+                }
+            }
+
+            $result->allroles = $allroles;
+            // Add flag to allow pre-selecting on FE.
+            foreach ($result->allroles as &$role) {
+                $role->selected = $role->id == $result->roleid;
+            }
         }
 
         // Cast object to array.
         return array_values(json_decode(json_encode($results), true));
+    }
+
+    /**
+     * Function to get all the sender views
+     * @return array
+     */
+    public function get_all_sender_views() {
+        global $DB;
+
+        $results = $DB->get_records('gs_contactus_mappings', null, '', 'id, formreason');
+        return array_values($results);
+    }
+
+    /**
+     * Function to get all roles
+     * @return array
+     */
+    public function get_all_roles() {
+        global $DB;
+
+        $results = $DB->get_records('role', null, '', 'id, shortname');
+        return array_values($results);
     }
 }

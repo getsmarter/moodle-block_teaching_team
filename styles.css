@@ -75,3 +75,10 @@
     }
 }
 
+#page-blocks-teaching_team-contactusform .action {
+    cursor: pointer;
+}
+
+#page-blocks-teaching_team-contactusform .action.save, #page-blocks-teaching_team-contactusform .action.cancel {
+    color: blue;
+}

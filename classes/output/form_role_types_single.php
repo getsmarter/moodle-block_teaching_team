@@ -54,7 +54,7 @@ class form_role_types_single implements \renderable, \templatable {
                         WHERE r.id
                         NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)";
 
-    // Cast object to array.
+        // Cast object to array.
         $availableroles = array_values(
             json_decode(
                 json_encode(

@@ -53,6 +53,10 @@ function addcontactusjs() {
     $script = '<script type="text/javascript">
         '. registeraddfromroletype($ajaxurl) .'
         '. registeraddformdropdown($ajaxurl) .'
+        '. registereditclick() .'
+        '. registerdeleteclick($ajaxurl) .'
+        '. registercancelclick() .'
+        '. registersaveclick($ajaxurl) .'
     </script>';
 
     return $script;
@@ -233,4 +237,152 @@ function getavailcontactusconfig() {
     }
 
     return $roles;
+}
+
+/**
+ * Helper function to register a JS function to the window
+ * @return string
+ */
+function registereditclick() {
+    $script = 'window.edit_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+        let targetrow = $(target).parents("tr");
+        targetrow.find("span").toggleClass("hidden");
+    }';
+
+    return $script;
+}
+
+/**
+ * Helper function to register a JS function to the window
+ * @param string The url used for ajax posting
+ * @return string
+ */
+function registerdeleteclick($ajaxurl) {
+    $script = 'window.delete_click = function() {
+        let confirmation = confirm("Delete?");
+        if (confirmation === true) {
+            let localEvent = event || window.event;
+            let target = localEvent.target;
+            let entityid = $(target).parents("tr").find("input[type=\'hidden\']").val();
+            let params = {
+                id: entityid
+            };
+            $.ajax({
+                type: "POST",
+                url: "'.$ajaxurl.'",
+                data: {
+                    "action": $(target).data("action"), params
+                },
+                success: (response) => {
+                    let responseParsed = response;
+                    if (typeof response !== "object") {
+                        responseParsed = JSON.parse(response);
+                    };
+
+                    if (responseParsed.error) {
+                        throw responseParsed.error
+                    }
+
+                    if (responseParsed.success == 200) {
+                        location.reload();
+                    }
+                },
+                error: (response) => {
+                    throw repsonse;
+                }
+            });
+        }
+    }';
+
+    return $script;
+}
+
+/**
+ * Helper function to register a JS function to the window
+ * @param string The url used for ajax posting
+ * @return string
+ */
+function registersaveclick($ajaxurl) {
+    global $USER;
+    $script = 'window.save_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+        let params;
+        let action = $(target).data("action");
+        let row = $(target).parents("tr");
+        switch (action) {
+            case "edit_from_role_type":
+                params = {
+                    "userid": '.$USER->id.',
+                    "id": row.find("input[name=\'id\']").val(),
+                    "fromroleid": row.find("select[name=\'fromroleid\']").val(),
+                    "salesforceapi": encodeURI(row.find("input[name=\'salesforceapi\']").val().trim()),
+                    "senderviewids": row.find("select[name=\'senderviewids\']").val().join()
+                }
+                break;
+            case "edit_form_dropdown":
+                params = {
+                    "userid": '.$USER->id.',
+                    "id": row.find("input[name=\'id\']").val(),
+                    "formreason": row.find("input[name=\'formreason\']").val(),
+                    "sfmapping": row.find("input[name=\'sfmapping\']").val().trim()
+                }
+                break;
+            default:
+                throw "Unrecognised action"
+                break;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "'.$ajaxurl.'",
+            data: {
+                "action": action, params
+            },
+            success: (response) => {
+                let responseParsed = response;
+                if (typeof response !== "object") {
+                    responseParsed = JSON.parse(response);
+                };
+
+                if (responseParsed.error) {
+                    throw responseParsed.error
+                }
+
+                if (responseParsed.success == 200) {
+                    location.reload();
+                }
+            },
+            error: (response) => {
+                throw repsonse;
+            }
+        });
+    }';
+
+    return $script;
+}
+
+/**
+ * Helper function to register a JS function to the window
+ * @return string
+ */
+function registercancelclick() {
+    $script = 'window.cancel_click = function() {
+        let localEvent = event || window.event;
+        let target = localEvent.target;
+        let row = $(target).parents("tr");
+        let rowspans = row.find("span")
+        row.find("select:visible option").each(function() {
+            $(this).prop("selected", $(this).data("selected") ?? false);
+        });
+        rowspans.find("input").each(function() {
+            let originaltext = $(this).data("originaltext");
+            $(this).val(originaltext);
+        });
+        rowspans.toggleClass("hidden");
+    }';
+
+    return $script;
 }
