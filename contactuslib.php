@@ -239,6 +239,10 @@ function getavailcontactusconfig() {
     return $roles;
 }
 
+/**
+ * Helper function to register a JS function to the window
+ * @return string
+ */
 function registereditclick() {
     $script = 'window.edit_click = function() {
         let localEvent = event || window.event;
@@ -250,6 +254,11 @@ function registereditclick() {
     return $script;
 }
 
+/**
+ * Helper function to register a JS function to the window
+ * @param string The url used for ajax posting
+ * @return string
+ */
 function registerdeleteclick($ajaxurl) {
     $script = 'window.delete_click = function() {
         let confirmation = confirm("Delete?");
@@ -290,6 +299,11 @@ function registerdeleteclick($ajaxurl) {
     return $script;
 }
 
+/**
+ * Helper function to register a JS function to the window
+ * @param string The url used for ajax posting
+ * @return string
+ */
 function registersaveclick($ajaxurl) {
     global $USER;
     $script = 'window.save_click = function() {
@@ -349,6 +363,11 @@ function registersaveclick($ajaxurl) {
 
     return $script;
 }
+
+/**
+ * Helper function to register a JS function to the window
+ * @return string
+ */
 function registercancelclick() {
     $script = 'window.cancel_click = function() {
         let localEvent = event || window.event;
