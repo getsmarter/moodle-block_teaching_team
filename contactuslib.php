@@ -135,6 +135,16 @@ function registeraddfromroletype($ajaxurl) {
                     });
                 });
             }
+
+            // ===========================================
+            // Setting up event listener for cancel
+            // ===========================================
+            $(".cancel").click(function(e) {
+                e.preventDefault();
+                $(e.target).closest("div").remove();
+                $(addButton).prop("disabled", false);
+                return false;
+            });
         };
     ';
 
@@ -211,6 +221,16 @@ function registeraddformdropdown($ajaxurl) {
                     });
                 });
             }
+
+            // ===========================================
+            // Setting up event listener for cancel
+            // ===========================================
+            $(".cancel").click(function(e) {
+                e.preventDefault();
+                $(e.target).closest("div").remove();
+                $(addButton).prop("disabled", false);
+                return false;
+            });
         };
     ';
 

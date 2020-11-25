@@ -1,5 +1,22 @@
 <form action="add_form_dropdown" method="post" id=add_form_dropdown_form>
-    <input type="text" name="formreason" id="formreason" required>
-    <input type="text" name="sfmapping" id="sfmapping" required>
-    <input type="submit" value="Submit">
+    <div class="form-group">
+        <input
+            type="text"
+            name="formreason"
+            id="formreason"
+            placeholder="Enter value visible on form"
+            class="form-control mb-2"
+            required
+        >
+        <input
+            type="text"
+            name="sfmapping"
+            id="sfmapping"
+            placeholder="Enter the salesforce mapping"
+            class="form-control mb-2"
+            required
+        >
+        <button type="submit" class="btn">Submit</button>
+        <button class="cancel btn">Cancel</button>
+    </div>
 </form>
