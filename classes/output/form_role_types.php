@@ -59,13 +59,10 @@ class form_role_types implements \renderable, \templatable {
         $results = $DB->get_records_sql($sql);
         $sql = "SELECT id, formreason FROM {gs_contactus_mappings} WHERE id ";
 
-        $allsenderviews = $this->get_all_sender_views();
-        $allroles = $this->get_all_roles();
-
         foreach ($results as &$result) {
             list($insql, $params) = $DB->get_in_or_equal(explode(',', $result->senderviewids));
             $result->senderviews = array_values($DB->get_records_sql($sql . $insql, $params));
-            $result->allsenderviews = $allsenderviews;
+            $result->allsenderviews = $this->get_all_sender_views();
 
             // Add flag to allow pre-selecting on FE.
             foreach ($result->senderviews as $senderview) {
@@ -74,7 +71,7 @@ class form_role_types implements \renderable, \templatable {
                 }
             }
 
-            $result->allroles = $allroles;
+            $result->allroles = $this->get_all_roles();
             // Add flag to allow pre-selecting on FE.
             foreach ($result->allroles as &$role) {
                 $role->selected = $role->id == $result->roleid;
@@ -102,8 +99,11 @@ class form_role_types implements \renderable, \templatable {
      */
     public function get_all_roles() {
         global $DB;
-
-        $results = $DB->get_records('role', null, '', 'id, shortname');
+        $sql = "SELECT id, shortname
+            FROM {role} r
+            WHERE r.id
+            NOT IN (SELECT gcc.fromroleid FROM {gs_contactus_config} gcc)";
+        $results = $DB->get_records_sql($sql);
         return array_values($results);
     }
 }
