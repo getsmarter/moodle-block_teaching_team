@@ -108,4 +108,34 @@ if ($ADMIN->fulltree) {
     $description = '';
     $default = false;
     $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));
+
+    $name = 'block_teaching_team/salesforce_authentication_url';
+    $title = get_string('contact_us_salesforce_authentication_url', 'block_teaching_team');
+    $description = '';
+    $default = '';
+    $settings->add(new admin_setting_configtext($name, $title, $description, $default));
+
+    $name = 'block_teaching_team/contact_us_salesforce_client_id';
+    $title = get_string('contact_us_salesforce_client_id', 'block_teaching_team');
+    $description = '';
+    $default = '';
+    $settings->add(new admin_setting_configtext($name, $title, $description, $default));
+
+    $name = 'block_teaching_team/contact_us_salesforce_client_secret';
+    $title = get_string('contact_us_salesforce_client_secret', 'block_teaching_team');
+    $description = '';
+    $default = '';
+    $settings->add(new admin_setting_configpasswordunmask($name, $title, $description, $default));
+
+    $name = 'block_teaching_team/contact_us_salesforce_username';
+    $title = get_string('contact_us_salesforce_username', 'block_teaching_team');
+    $description = '';
+    $default = '';
+    $settings->add(new admin_setting_configtext($name, $title, $description, $default));
+
+    $name = 'block_teaching_team/contact_us_salesforce_password';
+    $title = get_string('contact_us_salesforce_password', 'block_teaching_team');
+    $description = '';
+    $default = '';
+    $settings->add(new admin_setting_configpasswordunmask($name, $title, $description, $default));
 }
