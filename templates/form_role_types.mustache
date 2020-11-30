@@ -1,0 +1,98 @@
+<table id="formroletypes" class="table table-bordered">
+    <caption class="small pt-0 pb-0">Forms have been set up for the following roles</caption>
+    <thead>
+        <tr>
+            <th scope="col" class="hidden" aria-hidden="true">id</th>
+            <th scope="col">From</th>
+            <th scope="col">Salesforce Endpoint</th>
+            <th scope="col">Sender View Drop Down values</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+            <tr>
+                <td class="hidden" aria-hidden="true">
+                    <input type="hidden" name="id" value="{{id}}">
+                </td>
+                <td>
+                    <span>
+                        {{name}}
+                    </span>
+                    <span class="hidden">
+                        <select name="fromroleid">
+                            {{#allroles}}
+                                <option
+                                    value="{{id}}"
+                                    {{#selected}}
+                                        selected
+                                        data-selected="true"
+                                    {{/selected}}
+                                >
+                                    {{shortname}}
+                                </option>
+                            {{/allroles}}
+                        </select>
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        <a href="{{salesforceapi}}">{{salesforceapi}}</a>
+                    </span>
+                    <span class="hidden">
+                        <input
+                            type="text"
+                            name="salesforceapi"
+                            value="{{salesforceapi}}"
+                            data-originaltext="{{salesforceapi}}"
+                        >
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        <select disabled="disabled" multiple>
+                            {{#senderviews}}
+                                <option value="{{id}}" style="white-space: pre-wrap;">{{formreason}}</option>
+                            {{/senderviews}}
+                        </select>
+                    </span>
+                    <span class="hidden">
+                        <select multiple name="senderviewids">
+                            {{#allsenderviews}}
+                                <option
+                                    value="{{id}}"
+                                    style="white-space: pre-wrap;"
+                                    {{#selected}}
+                                        selected
+                                        data-selected="true"
+                                    {{/selected}}
+                                >
+                                    {{formreason}}
+                                </option>
+                            {{/allsenderviews}}
+                        </select>
+                    </span>
+                </td>
+                <td>
+                    <span class="action edit" onclick="edit_click()">Edit</span>
+                    <span
+                        class="action save hidden"
+                        onclick="save_click()"
+                        data-action="edit_from_role_type"
+                    >
+                        Save
+                    </span>
+                    /
+                    <span
+                        class="action delete"
+                        onclick="delete_click()"
+                        data-action="delete_from_role_type"
+                    >
+                        Delete
+                    </span>
+                    <span class="action cancel hidden" onclick="cancel_click()">Cancel</span>
+                </td>
+            </tr>
+        {{/records}}
+    </tbody>
+</table>

@@ -66,3 +66,16 @@ $string['no_user'] = 'None';
 
 $string['grouping_header'] = 'Common module settings';
 $string['user_has_no_group'] = 'Contact your Global Success team {number + email} if your teaching team is not displaying';
+
+$string['contact_us_form_heading'] = 'Contact Us Form settings';
+$string['contact_us_form_enable'] = 'Enable Contact Us form';
+$string['contact_us_form_page_heading'] = 'Contact Us Form';
+$string['contact_us_form_page_title'] = 'Contact Us Form';
+$string['contact_us_form_page_add_form_for_role_type'] = 'Create new form for role type';
+$string['contact_us_form_page_add_new_dropdown_value'] = 'Add new dropdown vale';
+$string['contact_us_form_support_page_link'] = 'Contact Us';
+$string['contact_us_page_heading'] = 'Contact Support Team';
+$string['contact_us_page_title'] = 'Contact Support Team';
+$string['contact_us_reason_label'] = 'I need assistance with:';
+$string['contact_us_context_label'] = 'Please provide us with any context that would be helpful';
+$string['contact_us_form_support_help_link'] = 'Visit Help Center';

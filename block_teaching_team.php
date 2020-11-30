@@ -76,7 +76,7 @@ class block_teaching_team extends block_base {
      * Generate block content
      */
     public function get_content() {
-        global $OUTPUT, $PAGE, $CFG;
+        global $OUTPUT, $PAGE, $CFG, $USER, $DB;
 
         require_once($CFG->libdir . '/filelib.php');
 
@@ -123,6 +123,41 @@ class block_teaching_team extends block_base {
             $this->content->text .= html_writer::tag('p', get_string('not_configured', 'block_teaching_team'));
         }
 
+        $courseid = $PAGE->course->id;
+        $context = context_course::instance($courseid);
+        $userroles = get_user_roles($context, $USER->id);
+        $mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
+        $configcontactformenabled = get_config('block_teaching_team');
+
+        foreach ($userroles as $userrole) {
+            if (in_array($userrole->roleid, $mappings)) {
+                $url = new moodle_url('/blocks/teaching_team/contact_us.php', [
+                    'courseid' => $courseid
+                ]);
+                $this->content->text .= html_writer::start_tag('div');
+                if (!empty($configcontactformenabled->contact_us_form_enable)) {
+                    $this->content->text .= html_writer::tag(
+                        'a',
+                        get_string('contact_us_form_support_page_link', 'block_teaching_team'),
+                        [
+                            'href' => $url,
+                            'class' => 'btn btn-primary mx-auto'
+                        ]
+                    );
+                }
+                $this->content->text .= html_writer::tag(
+                    'button',
+                    get_string('contact_us_form_support_help_link', 'block_teaching_team'),
+                    [
+                        'class' => 'btn btn-primary',
+                        'style' => 'margin-left: 4px; margin-top: 9px; line-height: 24px; font-weight: 600; font-size: 12px',
+                        'onclick' => 'window._elev.openHome();'
+                    ]
+                );
+                $this->content->text .= html_writer::end_tag('div');
+            }
+        }
+
         $this->content->text .= html_writer::end_tag('div');
 
         return $this->content;
@@ -144,7 +179,7 @@ class block_teaching_team extends block_base {
                 if (isset($this->config->grouping)) {
                     foreach ($this->get_user_groups($this->config->grouping, $courseid, $USER->id) as $groupid) {
                         $groupids.= $groupid->id.',';
-                    }                    
+                    }
                 }
 
                 if ($groupids === '') {
@@ -334,21 +369,21 @@ class block_teaching_team extends block_base {
     protected function get_user_groups($groupingname, $courseid, $userid) {
         global $DB;
 
-        $groupidsql = 'SELECT 
+        $groupidsql = 'SELECT
                            g.id
                         FROM
                             {groups_members} gm
                                 LEFT JOIN
                             {groups} g ON gm.groupid = g.id
                                 LEFT JOIN
-                            {groupings_groups} gg on g.id = gg.groupid               
-                                LEFT JOIN 
-                            {groupings} gs on gg.groupingid = gs.id    
+                            {groupings_groups} gg on g.id = gg.groupid
+                                LEFT JOIN
+                            {groupings} gs on gg.groupingid = gs.id
                         WHERE
                              gs.name = ? AND g.courseid = ? AND gm.userid = ?';
 
         $groupids = $DB->get_records_sql($groupidsql, array($groupingname, $courseid, $userid));
-        
+
         return $groupids;
 
     }

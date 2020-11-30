@@ -1,0 +1,19 @@
+<form action='add_from_role_type' method='post' id=add_contact_us_form>
+    <div class="form-group">
+        <select name='fromroleid' id='fromroleid' required class="form-control mb-2">
+            <option value="" disabled selected>Select a from role</option>
+            {{#availableroles}}
+                <option value={{id}}>{{shortname}}</option>
+            {{/availableroles}}
+        </select>
+        <input type='url' name='salesforceapi' id='salesforceapi' required class="form-control mb-2" placeholder="Salesforce API endpoint">
+        <select name="senderviewids" id="senderviewids" multiple class="form-control mb-2" required>
+            <option value="" disabled>Select dropdown values for form</option>
+            {{#senderviews}}
+                <option value="{{id}}">{{formreason}}</option>
+            {{/senderviews}}
+        </select>
+        <button type="submit" class="btn">Submit</button>
+        <button class="cancel btn">Cancel</button>
+    </div>
+</form>
