@@ -23,13 +23,47 @@
  */
 
 use block_teaching_team\output\contact_us;
+use block_teaching_team\salesforce\salesforce;
 
 require_once('../../config.php');
 require_once('contactuslib.php');
 require_login();
 
-// Safety check to see if role configured.
 $courseid = required_param('courseid', PARAM_INT);
+
+// Check if POST, means form submission.
+if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get all the settings.
+    $contactussettings = get_config('block_teaching_team');
+    $authurl = $contactussettings->contact_us_salesforce_authentication_url ?? '';
+    $clientid = $contactussettings->contact_us_salesforce_client_id ?? '';
+    $clientsecret = $contactussettings->contact_us_salesforce_client_secret ?? '';
+    $username = $contactussettings->contact_us_salesforce_username ?? '';
+    $password = $contactussettings->contact_us_salesforce_password ?? '';
+    $sf = new salesforce($authurl, $clientid, $clientsecret, $username, $password);
+
+    // Get the option that the user has selected.
+    $formreasonid = required_param('formreason', PARAM_INT);
+    $formreasontext = $DB->get_record('gs_contactus_mappings', ['id' => $formreasonid], 'formreason')->formreason;
+
+    // Get description/user submitted context.
+    $courseshortname = $DB->get_record('course', ['id' => $courseid], 'shortname')->shortname;
+    $description = "Course: $courseshortname\n" . optional_param('context', '', PARAM_TEXT);
+
+    // Authenticate.
+    $sf->authenticate();
+
+    // Create the case.
+    $sf->createcase($formreasontext, $description, $USER->email);
+
+    if (!empty($_FILES['attachment'])) {
+        $file = $_FILES['attachment'];
+        // Upload the file.
+        $sf->uploadattachementcase($file);
+    }
+}
+
+// Safety check to see if role configured.
 $context = context_course::instance($courseid);
 $userrole = current(get_user_roles($context, $USER->id))->roleid;
 
