@@ -85,3 +85,4 @@ $string['contact_us_salesforce_client_id'] = 'Salesforce Client ID';
 $string['contact_us_salesforce_client_secret'] = 'Salesforce Client Secret';
 $string['contact_us_salesforce_username'] = 'Salesforce Username';
 $string['contact_us_salesforce_password'] = 'Salesforce Password';
+$string['contact_us_form_submitted'] = 'Your contact request has been submitted. We will contact you shortly.';
