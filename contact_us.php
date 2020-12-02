@@ -31,6 +31,35 @@ require_login();
 
 $courseid = required_param('courseid', PARAM_INT);
 
+// Safety check to see if role configured.
+$context = context_course::instance($courseid);
+$userrole = current(get_user_roles($context, $USER->id))->roleid;
+
+$mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
+$mappingexists = false;
+$url = new moodle_url('/blocks/teaching_team/course.php', [
+    'courseid' => $courseid
+]);
+$output = $PAGE->get_renderer('block_teaching_team');
+
+if (in_array($userrole, $mappings)) {
+    $mappingexists = true;
+}
+
+$configcontactformenabled = get_config('block_teaching_team');
+
+// Redirect if not exist.
+if (!$mappingexists || empty($configcontactformenabled->contact_us_form_enable)) {
+    redirect($url);
+}
+
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('admin');
+$PAGE->set_title(get_string('contact_us_form_page_title', 'block_teaching_team'));
+$PAGE->set_heading(get_string('contact_us_form_page_heading', 'block_teaching_team'));
+
+echo $OUTPUT->header();
+
 // Check if POST, means form submission.
 if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get all the settings.
@@ -61,37 +90,15 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
         // Upload the file.
         $sf->uploadattachementcase($file);
     }
+
+    $courseurl = new moodle_url('/course/view.php', ['id' => $courseid]);
+    echo html_writer::tag('h1', 'Contact Request', ['class' => 'text-center']);
+    echo html_writer::tag('p', get_string('contact_us_form_submitted', 'block_teaching_team'), ['class' => 'text-center']);
+    echo html_writer::start_tag('div', ['class' => 'text-center']);
+    echo html_writer::tag('a', 'Return to course', ['href' => $courseurl, 'class' => 'btn text-center']);
+    echo html_writer::end_tag('div');
+} else {
+    $form = new contact_us($userrole, $url);
+    echo $output->render($form);
 }
-
-// Safety check to see if role configured.
-$context = context_course::instance($courseid);
-$userrole = current(get_user_roles($context, $USER->id))->roleid;
-
-$mappings = $DB->get_records_menu('gs_contactus_config', null, '', 'id, fromroleid');
-$mappingexists = false;
-$url = new moodle_url('/blocks/teaching_team/course.php', [
-    'courseid' => $courseid
-]);
-
-if (in_array($userrole, $mappings)) {
-    $mappingexists = true;
-}
-
-$configcontactformenabled = get_config('block_teaching_team');
-
-// Redirect if not exist.
-if (!$mappingexists || empty($configcontactformenabled->contact_us_form_enable)) {
-    redirect($url);
-}
-
-$output = $PAGE->get_renderer('block_teaching_team');
-$form = new contact_us($userrole, $url);
-
-$PAGE->set_context($context);
-$PAGE->set_pagelayout('admin');
-$PAGE->set_title(get_string('contact_us_form_page_title', 'block_teaching_team'));
-$PAGE->set_heading(get_string('contact_us_form_page_heading', 'block_teaching_team'));
-
-echo $OUTPUT->header();
-echo $output->render($form);
 echo $OUTPUT->footer();
