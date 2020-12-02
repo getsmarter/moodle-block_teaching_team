@@ -109,6 +109,12 @@ if ($ADMIN->fulltree) {
     $default = false;
     $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));
 
+    $name = 'block_teaching_team/contact_us_form_support_help_link';
+    $title = get_string('contact_us_form_enable_support_help_link', 'block_teaching_team');
+    $description = '';
+    $default = false;
+    $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default));
+
     $name = 'block_teaching_team/contact_us_salesforce_authentication_url';
     $title = get_string('contact_us_salesforce_authentication_url', 'block_teaching_team');
     $description = '';
