@@ -79,6 +79,7 @@ $string['contact_us_page_title'] = 'Contact Support Team';
 $string['contact_us_reason_label'] = 'I need assistance with:';
 $string['contact_us_context_label'] = 'Please provide us with any context that would be helpful';
 $string['contact_us_form_support_help_link'] = 'Visit Help Center';
+$string['contact_us_form_enable_support_help_link'] = 'Enable Visit Help Center';
 $string['contact_us_salesforce_authentication_url'] = 'Salesforce Authentication Url';
 $string['contact_us_salesforce_client_id'] = 'Salesforce Client ID';
 $string['contact_us_salesforce_client_secret'] = 'Salesforce Client Secret';
