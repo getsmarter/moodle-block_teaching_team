@@ -121,8 +121,7 @@ class salesforce {
             'Origin' => self::ORIGIN,
             'Status' => self::STATUS,
             'Type' => $type,
-            // Temporarily disabled until SF gets back to us.
-            // 'ContactEmail' => $useremail,.
+            'ContactEmail' => $useremail,
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE
         ]);
