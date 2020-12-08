@@ -111,7 +111,7 @@ class salesforce {
      * @param string $useremail
      * @return void
      */
-    public function createcase($type, $description, $useremail) {
+    public function createcase($type, $description, $useremail, $subject) {
         $headers = [
             "Authorization: Bearer {$this->accesstoken}",
             'Content-Type: application/json'
@@ -123,6 +123,7 @@ class salesforce {
             'Type' => $type,
             // Temporarily disabled until SF gets back to us.
             // 'ContactEmail' => $useremail,.
+            'Subject' => $subject,
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE
         ]);

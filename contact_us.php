@@ -76,14 +76,16 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
     $formreasontext = $DB->get_record('gs_contactus_mappings', ['id' => $formreasonid], 'formreason')->formreason;
 
     // Get description/user submitted context.
-    $courseshortname = $DB->get_record('course', ['id' => $courseid], 'shortname')->shortname;
+    $course = $DB->get_record('course', ['id' => $courseid], 'shortname');
+    $courseshortname = $course->shortname;
     $description = "Course: $courseshortname\n" . optional_param('context', '', PARAM_TEXT);
+    $subject = $courseshortname.' | '.$formreasontext;
 
     // Authenticate.
     $sf->authenticate();
 
     // Create the case.
-    $sf->createcase($formreasontext, $description, $USER->email);
+    $sf->createcase($formreasontext, $description, $USER->email, $subject);
 
     if (!empty($_FILES['attachment'])) {
         $file = $_FILES['attachment'];
