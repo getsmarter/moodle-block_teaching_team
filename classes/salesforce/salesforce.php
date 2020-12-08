@@ -112,6 +112,9 @@ class salesforce {
      * @return void
      */
     public function createcase($type, $description, $useremail, $subject) {
+        
+        global $USER, $CFG;
+
         $headers = [
             "Authorization: Bearer {$this->accesstoken}",
             'Content-Type: application/json'
@@ -125,7 +128,11 @@ class salesforce {
             // 'ContactEmail' => $useremail,.
             'Subject' => $subject,
             'Description' => $description,
-            'RecordType' => self::RECORD_TYPE
+            'RecordType' => self::RECORD_TYPE,
+            'Account' => array(
+                'UUID__cc' => $USER->uuid,
+                'OLC_Profile_Link__c' => $CFG->wwwroot .  '/user/view.php?id=' . $USER->id
+            )
         ]);
 
         $curlparams = [
