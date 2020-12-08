@@ -124,15 +124,13 @@ class salesforce {
             'Origin' => self::ORIGIN,
             'Status' => self::STATUS,
             'Type' => $type,
-            // Temporarily disabled until SF gets back to us.
-            // 'ContactEmail' => $useremail,.
             'Subject' => $subject,
+            'Account' => [
+                'UUID__c' => $USER->uuid
+            ],
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE,
-            'Account' => array(
-                'UUID__cc' => $USER->uuid,
-                'OLC_Profile_Link__c' => $CFG->wwwroot .  '/user/view.php?id=' . $USER->id
-            )
+            'OLC_Profile_Link__c' => $CFG->wwwroot .  '/user/view.php?id=' . $USER->id  
         ]);
 
         $curlparams = [
