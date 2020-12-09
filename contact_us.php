@@ -73,7 +73,7 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
 
     // Get the option that the user has selected.
     $formreasonid = required_param('formreason', PARAM_INT);
-    $formreasontext = $DB->get_record('gs_contactus_mappings', ['id' => $formreasonid], 'formreason')->formreason;
+    $formreasontext = $DB->get_record('gs_contactus_mappings', ['id' => $formreasonid], 'sfmapping')->sfmapping;
 
     // Get description/user submitted context.
     $course = $DB->get_record('course', ['id' => $courseid], 'shortname');
