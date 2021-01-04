@@ -65,7 +65,7 @@ $string['not_configured'] = 'Please choose users to display in the block configu
 $string['no_user'] = 'None';
 
 $string['grouping_header'] = 'Common module settings';
-$string['user_has_no_group'] = 'Contact your Global Success team {number + email} if your teaching team is not displaying';
+$string['user_has_no_group'] = 'Please contact your Success Advisor if you do not see the profiles of your support team on this page.';
 
 $string['contact_us_form_heading'] = 'Contact Us Form settings';
 $string['contact_us_form_enable'] = 'Enable Contact Us form';
@@ -85,4 +85,5 @@ $string['contact_us_salesforce_client_id'] = 'Salesforce Client ID';
 $string['contact_us_salesforce_client_secret'] = 'Salesforce Client Secret';
 $string['contact_us_salesforce_username'] = 'Salesforce Username';
 $string['contact_us_salesforce_password'] = 'Salesforce Password';
-$string['contact_us_form_submitted'] = 'Your contact request has been submitted. We will contact you shortly.';
+$string['contact_us_form_submitted'] = 'Thank you for getting in touch. A Success Advisor will respond to you on your registered email address.';
+$string['request_confirmation'] = 'Request Confirmation';

@@ -94,7 +94,7 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
     }
 
     $courseurl = new moodle_url('/course/view.php', ['id' => $courseid]);
-    echo html_writer::tag('h1', 'Contact Request', ['class' => 'text-center']);
+    echo html_writer::tag('h1', get_string('request_confirmation', 'block_teaching_team'), ['class' => 'text-center']);
     echo html_writer::tag('p', get_string('contact_us_form_submitted', 'block_teaching_team'), ['class' => 'text-center']);
     echo html_writer::start_tag('div', ['class' => 'text-center']);
     echo html_writer::tag('a', 'Return to course', ['href' => $courseurl, 'class' => 'btn text-center']);
