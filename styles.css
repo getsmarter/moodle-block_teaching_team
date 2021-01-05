@@ -82,3 +82,8 @@
 #page-blocks-teaching_team-contactusform .action.save, #page-blocks-teaching_team-contactusform .action.cancel {
     color: blue;
 }
+
+#page-blocks-teaching_team-contact_us .contact-us-submit {
+    font-size: 12px;
+    padding: 5px 20px;
+}
