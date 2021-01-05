@@ -141,18 +141,19 @@ class block_teaching_team extends block_base {
                         get_string('contact_us_form_support_page_link', 'block_teaching_team'),
                         [
                             'href' => $url,
-                            'class' => 'btn btn-primary mx-auto'
+                            'class' => 'btn btn-primary mx-auto',
+                            'style' => 'border-bottom: 1px solid #bbb !important'
                         ]
                     );
                 }
 
                 if (!empty($configcontactformenabled->contact_us_form_support_help_link)) {
                     $this->content->text .= html_writer::tag(
-                        'button',
+                        'a',
                         get_string('contact_us_form_support_help_link', 'block_teaching_team'),
                         [
                             'class' => 'btn btn-primary',
-                            'style' => 'margin-left: 4px; margin-top: 9px; line-height: 24px; font-weight: 600; font-size: 12px',
+                            'style' => 'margin-left: 4px; border-bottom: 1px solid #bbb !important',
                             'onclick' => 'window._elev.openHome();'
                         ]
                     );
