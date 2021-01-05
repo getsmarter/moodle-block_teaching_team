@@ -66,6 +66,7 @@ $string['no_user'] = 'None';
 
 $string['grouping_header'] = 'Common module settings';
 $string['user_has_no_group'] = 'Please contact your Success Advisor if you do not see the profiles of your support team on this page.';
+$string['select_one_reason'] = 'Select an option from the list.';
 
 $string['contact_us_form_heading'] = 'Contact Us Form settings';
 $string['contact_us_form_enable'] = 'Enable Contact Us form';
