@@ -78,7 +78,7 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
     // Get description/user submitted context.
     $course = $DB->get_record('course', ['id' => $courseid], 'shortname');
     $courseshortname = $course->shortname;
-    $description = "Course: $courseshortname\n" . optional_param('context', '', PARAM_TEXT);
+    $description = "Course: $courseshortname\n" . optional_param('context', '', PARAM_TEXT) . "\n".get_success_manager_user($courseid)->email;
     $subject = $courseshortname.' | '.$formreasontext;
 
     // Authenticate.

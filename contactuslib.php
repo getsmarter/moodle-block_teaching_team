@@ -406,3 +406,25 @@ function registercancelclick() {
 
     return $script;
 }
+
+/**
+ * Helper function to retrieve one SA per course.
+ * @param int Courseid
+ * @return  user object or false
+ */
+function get_success_manager_user($courseid) {
+    global $DB;
+    
+    $role = $DB->get_record('role', array('shortname' => 'coursecoach'));
+
+    if (!empty($role)) {
+
+        $context = context_course::instance($courseid);
+
+        $users = get_role_users($role->id, $context);
+        
+        return current($users);
+    }
+
+    return false;
+}
