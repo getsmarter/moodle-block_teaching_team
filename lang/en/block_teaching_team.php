@@ -88,3 +88,4 @@ $string['contact_us_salesforce_username'] = 'Salesforce Username';
 $string['contact_us_salesforce_password'] = 'Salesforce Password';
 $string['contact_us_form_submitted'] = 'Thank you for getting in touch. A Success Advisor will respond to you on your registered email address.';
 $string['request_confirmation'] = 'Request Confirmation';
+$string['failover_email_address'] = 'Failover email address';

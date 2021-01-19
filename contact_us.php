@@ -80,18 +80,13 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
     $courseshortname = $course->shortname;
     $description = "Course: $courseshortname\n" . optional_param('context', '', PARAM_TEXT) . "\n".get_success_manager_user($courseid)->email;
     $subject = $courseshortname.' | '.$formreasontext;
+    $file = !empty($_FILES['attachment']) ? $_FILES['attachment']: false;
 
     // Authenticate.
     $sf->authenticate();
 
     // Create the case.
-    $sf->createcase($formreasontext, $description, $USER->email, $subject);
-
-    if (!empty($_FILES['attachment'])) {
-        $file = $_FILES['attachment'];
-        // Upload the file.
-        $sf->uploadattachementcase($file);
-    }
+    $sf->create_case($formreasontext, $description, $USER->email, $subject, $courseid, $file);
 
     $courseurl = new moodle_url('/course/view.php', ['id' => $courseid]);
     echo html_writer::tag('h1', get_string('request_confirmation', 'block_teaching_team'), ['class' => 'text-center']);
