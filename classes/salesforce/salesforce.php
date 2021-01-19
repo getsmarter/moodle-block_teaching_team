@@ -90,7 +90,7 @@ class salesforce {
             ]
         ];
 
-        list($result, $httpcode) = $this->doapicall($curlparams);
+        list($result, $httpcode) = $this->do_api_call($curlparams);
 
         if ($httpcode == 200) {
             $sfresult = json_decode($result);
@@ -114,7 +114,7 @@ class salesforce {
      * @param string $useremail
      * @return void
      */
-    public function createcase($type, $description, $useremail, $subject, $courseid, $file = false) {
+    public function create_case($type, $description, $useremail, $subject, $courseid, $file = false) {
 
         global $USER, $CFG;
         $olcprofilelink = $CFG->wwwroot .  '/user/view.php?id=' . $USER->id;
@@ -143,7 +143,7 @@ class salesforce {
             CURLOPT_HTTPHEADER => $headers
         ];
 
-        list($result, $httpcode) = $this->doapicall($curlparams);
+        list($result, $httpcode) = $this->do_api_call($curlparams);
 
         if ($httpcode == 201) {
             $sfresult = json_decode($result);
@@ -153,7 +153,7 @@ class salesforce {
             }
 
             if ($file) {
-                $this->uploadattachementcase($file);
+                $this->upload_attachement_case($file);
             }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
@@ -162,11 +162,11 @@ class salesforce {
     }
 
     /**
-     * Attach file upload to case. MUST BE RUN AFTER createcase()
+     * Attach file upload to case. MUST BE RUN AFTER create_case()
      * @param array $file
      * @return void
      */
-    public function uploadattachementcase($file) {
+    public function upload_attachement_case($file) {
 
         $headers = [
             "Authorization: Bearer {$this->accesstoken}",
@@ -195,7 +195,7 @@ class salesforce {
             CURLOPT_FOLLOWLOCATION => true
         ];
 
-        list($result, $httpcode) = $this->doapicall($curlparams);
+        list($result, $httpcode) = $this->do_api_call($curlparams);
 
         if ($httpcode != 201) {
             error_log('contact_us_salesforce_api:' . $result);
@@ -207,7 +207,7 @@ class salesforce {
      * @param array $curlparams
      * @return array
      */
-    public function doapicall($curlparams) {
+    public function do_api_call($curlparams) {
         $ch = curl_init();
 
         foreach ($curlparams as $option => $value) {

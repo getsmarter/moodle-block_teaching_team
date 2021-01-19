@@ -86,7 +86,7 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
     $sf->authenticate();
 
     // Create the case.
-    $sf->createcase($formreasontext, $description, $USER->email, $subject, $courseid, $file);
+    $sf->create_case($formreasontext, $description, $USER->email, $subject, $courseid, $file);
 
     $courseurl = new moodle_url('/course/view.php', ['id' => $courseid]);
     echo html_writer::tag('h1', get_string('request_confirmation', 'block_teaching_team'), ['class' => 'text-center']);
