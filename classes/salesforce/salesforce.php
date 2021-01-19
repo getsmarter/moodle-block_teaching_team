@@ -25,6 +25,9 @@ namespace block_teaching_team\salesforce;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->libdir.'/moodlelib.php');
+require_once(dirname( __FILE__ ) . '/../../contactuslib.php');
+
 class salesforce {
     // Consts used when creating SF cases.
     protected const ORIGIN = 'OLC';
@@ -111,9 +114,10 @@ class salesforce {
      * @param string $useremail
      * @return void
      */
-    public function createcase($type, $description, $useremail, $subject) {
-        
+    public function createcase($type, $description, $useremail, $subject, $courseid, $file = false) {
+
         global $USER, $CFG;
+        $olcprofilelink = $CFG->wwwroot .  '/user/view.php?id=' . $USER->id;
 
         $headers = [
             "Authorization: Bearer {$this->accesstoken}",
@@ -130,7 +134,7 @@ class salesforce {
             ],
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE,
-            'OLC_Profile_Link__c' => $CFG->wwwroot .  '/user/view.php?id=' . $USER->id  
+            'OLC_Profile_Link__c' => $olcprofilelink
         ]);
 
         $curlparams = [
@@ -147,8 +151,13 @@ class salesforce {
             if (!empty($sfresult->id)) {
                 $this->parentid = $sfresult->id;
             }
+
+            if ($file) {
+                $this->uploadattachementcase($file);
+            }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
+            $this->send_email($subject, $type, $USER->uuid, $olcprofilelink, $description, $result, $courseid, $file);
         }
     }
 
@@ -214,6 +223,33 @@ class salesforce {
 
         curl_close($ch);
         return [$result, $httpcode];
+    }
+
+    public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $courseid, $file = false) {
+        global $DB, $CFG;
+        $emailbody = sprintf(
+            "Type: %s \nSubject: %s \n Account (uuid): %s \nOLC profile link: %s \nDescription: %s \nError: %s",
+            $type,
+            $subject,
+            $uuid,
+            $olcprofilelink,
+            $description,
+            $error
+        );
+
+        $salesforcefailoveremail = get_config('block_teaching_team', 'failover_email_address');
+        $user = $DB->get_record('user', ['email' => $salesforcefailoveremail]);
+        $from = get_success_manager_user($courseid);
+        // Basename to prevent dir traversal attacks
+        $filename = basename($file['name']);
+        $uploaddir = $CFG->tempdir . '/' . $filename;
+
+        // Copy the file to the $CFG->tempdir because the email send requires it to be there or $CFG->filedir
+        if ($file) {
+            move_uploaded_file($file['tmp_name'], $uploaddir);
+        }
+
+        email_to_user($user, $from, $subject, $emailbody, '', $uploaddir, $filename);
     }
 
 }
