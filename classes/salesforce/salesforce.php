@@ -157,7 +157,7 @@ class salesforce {
             }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
-            $this->send_email($subject, $type, $USER->uuid, $olcprofilelink, $description, $result, $courseid, $file);
+            $this->send_email($subject, $type, $USER->uuid, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
         }
     }
 
@@ -233,18 +233,20 @@ class salesforce {
      * @param string $olcprofilelink
      * @param string $description
      * @param string $error
+     * @param int $httpcode
      * @param int $courseid
      * @param array $file
      */
-    public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $courseid, $file = false) {
+    public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $httpcode, $courseid, $file = false) {
         global $DB, $CFG;
         $emailbody = sprintf(
-            "Type: %s \nSubject: %s \n Account (uuid): %s \nOLC profile link: %s \nDescription: %s \nError: %s",
+            "Type: %s \nSubject: %s \nAccount (uuid): %s \nOLC profile link: %s \nDescription: %s \nHTTP code: %s \nError: %s",
             $type,
             $subject,
             $uuid,
             $olcprofilelink,
             $description,
+            $httpcode,
             $error
         );
 
