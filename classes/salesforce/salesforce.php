@@ -225,6 +225,17 @@ class salesforce {
         return [$result, $httpcode];
     }
 
+    /**
+     * Utility funciton to send email
+     * @param string $subject
+     * @param string $type
+     * @param string $uuid
+     * @param string $olcprofilelink
+     * @param string $description
+     * @param string $error
+     * @param int $courseid
+     * @param array $file
+     */
     public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $courseid, $file = false) {
         global $DB, $CFG;
         $emailbody = sprintf(
