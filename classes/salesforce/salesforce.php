@@ -116,7 +116,7 @@ class salesforce {
      */
     public function create_case($type, $description, $useremail, $subject, $courseid, $file = false) {
 
-        global $USER, $CFG;
+        global $USER, $CFG, $DB;
         $olcprofilelink = $CFG->wwwroot .  '/user/view.php?id=' . $USER->id;
 
         $headers = [
@@ -124,13 +124,26 @@ class salesforce {
             'Content-Type: application/json'
         ];
 
+        $useruuid = 'No uuid present';
+
+        try {
+         $user = $DB->get_record('user', array('id' => $USER->id));
+         if ($user) {
+            if (!empty($user->uuid)) {
+                $useruuid = $user->uuid;
+            }
+         }
+        } catch (Exception $e) {
+            error_log('contact_us_salesforce_api: uuid error');
+        }
+
         $data = json_encode([
             'Origin' => self::ORIGIN,
             'Status' => self::STATUS,
             'Type' => $type,
             'Subject' => $subject,
             'Account' => [
-                'UUID__c' => $USER->uuid
+                'UUID__c' => $useruuid
             ],
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE,
