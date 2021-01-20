@@ -239,6 +239,11 @@ class salesforce {
      */
     public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $httpcode, $courseid, $file = false) {
         global $DB, $CFG;
+
+        if (empty($error)) {
+            $error = get_string('failover_email_default_error', 'block_teaching_team');
+        }
+
         $emailbody = sprintf(
             "Type: %s \nSubject: %s \nAccount (uuid): %s \nOLC profile link: %s \nDescription: %s \nHTTP code: %s \nError: %s",
             $type,
