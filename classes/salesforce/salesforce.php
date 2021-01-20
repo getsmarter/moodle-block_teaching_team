@@ -170,7 +170,7 @@ class salesforce {
             }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
-            $this->send_email($subject, $type, $USER->uuid, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
+            $this->send_email($subject, $type, $useruuid, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
         }
     }
 
