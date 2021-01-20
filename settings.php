@@ -118,7 +118,7 @@ if ($ADMIN->fulltree) {
     $name = 'block_teaching_team/failover_email_address';
     $title = get_string('failover_email_address', 'block_teaching_team');
     $description = '';
-    $default = '';
+    $default = 'help@getsmarter.com';
     $settings->add(new admin_setting_configtext($name, $title, $description, $default));
 
     $name = 'block_teaching_team/contact_us_salesforce_authentication_url';

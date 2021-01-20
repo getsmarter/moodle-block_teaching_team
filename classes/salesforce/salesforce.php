@@ -33,7 +33,7 @@ class salesforce {
     protected const ORIGIN = 'OLC';
     protected const STATUS = 'New';
     protected const RECORD_TYPE = [
-        "Name" => "Student Records Case"
+        "Name" => "Student Success Case"
     ];
 
     /** @var string $accesstoken */
