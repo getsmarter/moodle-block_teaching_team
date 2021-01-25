@@ -251,14 +251,14 @@ class salesforce {
      * @param array $file
      */
     public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $httpcode, $courseid, $file = false) {
-        global $DB, $CFG;
+        global $DB, $CFG, $USER;
 
         if (empty($error)) {
             $error = get_string('failover_email_default_error', 'block_teaching_team');
         }
 
         $salesforcefailoveremail = get_config('block_teaching_team', 'failover_email_address');
-        $user = $DB->get_record('user', ['email' => $salesforcefailoveremail]);
+        $salesforce_user = $DB->get_record('user', ['email' => $salesforcefailoveremail]);
 
         $emailbody = sprintf(
             "Type: %s \n" .
@@ -273,9 +273,9 @@ class salesforce {
             "Error: %s",
             $type,
             $subject,
-            $user->email,
-            $user->firstname,
-            $user->lastname,
+            $USER->email,
+            $USER->firstname,
+            $USER->lastname,
             $uuid,
             $olcprofilelink,
             $description,
@@ -293,7 +293,7 @@ class salesforce {
             move_uploaded_file($file['tmp_name'], $uploaddir);
         }
 
-        email_to_user($user, $from, $subject, $emailbody, '', $uploaddir, $filename);
+        email_to_user($salesforce_user, $from, $subject, $emailbody, '', $uploaddir, $filename);
     }
 
 }
