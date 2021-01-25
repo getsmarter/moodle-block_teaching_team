@@ -257,10 +257,25 @@ class salesforce {
             $error = get_string('failover_email_default_error', 'block_teaching_team');
         }
 
+        $salesforcefailoveremail = get_config('block_teaching_team', 'failover_email_address');
+        $user = $DB->get_record('user', ['email' => $salesforcefailoveremail]);
+
         $emailbody = sprintf(
-            "Type: %s \nSubject: %s \nAccount (uuid): %s \nOLC profile link: %s \nDescription: %s \nHTTP code: %s \nError: %s",
+            "Type: %s \n" .
+            "Subject: %s \n" .
+            "Email: %s\n" .
+            "First Name: %s\n" .
+            "Surname: %s\n" .
+            "Account (uuid): %s \n" .
+            "OLC profile link: %s \n" .
+            "Description: %s \n" .
+            "HTTP code: %s \n" .
+            "Error: %s",
             $type,
             $subject,
+            $user->email,
+            $user->firstname,
+            $user->lastname,
             $uuid,
             $olcprofilelink,
             $description,
@@ -268,8 +283,6 @@ class salesforce {
             $error
         );
 
-        $salesforcefailoveremail = get_config('block_teaching_team', 'failover_email_address');
-        $user = $DB->get_record('user', ['email' => $salesforcefailoveremail]);
         $from = get_success_manager_user($courseid);
         // Basename to prevent dir traversal attacks
         $filename = basename($file['name']);
