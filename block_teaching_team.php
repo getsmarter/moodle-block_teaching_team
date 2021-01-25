@@ -153,8 +153,8 @@ class block_teaching_team extends block_base {
                         get_string('contact_us_form_support_help_link', 'block_teaching_team'),
                         [
                             'class' => 'btn btn-primary',
-                            'style' => 'margin-left: 4px; border-bottom: 1px solid #bbb !important',
-                            'onclick' => 'window._elev.openHome();'
+                            'id' => 'contact_us_form_support_help_link',
+                            'style' => 'margin-left: 4px; border-bottom: 1px solid #bbb !important'
                         ]
                     );
                 }
