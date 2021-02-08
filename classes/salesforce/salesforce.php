@@ -142,12 +142,12 @@ class salesforce {
             'Status' => self::STATUS,
             'Type' => $type,
             'Subject' => $subject,
-            'Account' => [
-                'UUID__c' => $useruuid
-            ],
             'Description' => $description,
             'RecordType' => self::RECORD_TYPE,
-            'OLC_Profile_Link__c' => $olcprofilelink
+            'OLC_Profile_Link__c' => $olcprofilelink,
+            'Contact' => [
+                'email' => $USER->email
+            ]
         ]);
 
         $curlparams = [
