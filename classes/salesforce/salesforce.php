@@ -252,7 +252,6 @@ class salesforce {
             "Email: %s\n" .
             "First Name: %s\n" .
             "Surname: %s\n" .
-            "Account (uuid): %s \n" .
             "OLC profile link: %s \n" .
             "Description: %s \n" .
             "HTTP code: %s \n" .
