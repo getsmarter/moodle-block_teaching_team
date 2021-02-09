@@ -136,7 +136,7 @@ class salesforce {
             'OLC_Profile_Link__c' => $olcprofilelink,
             'Contact' => [
                 'email' => $USER->email
-            ],
+            ]
         ]);
 
         $curlparams = [
