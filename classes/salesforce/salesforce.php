@@ -124,8 +124,6 @@ class salesforce {
             'Content-Type: application/json'
         ];
 
-        $useruuid = 'No uuid present';
-
         $data = json_encode([
             'Origin' => self::ORIGIN,
             'Status' => self::STATUS,
@@ -159,7 +157,7 @@ class salesforce {
             }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
-            $this->send_email($subject, $type, $useruuid, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
+            $this->send_email($subject, $type, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
         }
     }
 
