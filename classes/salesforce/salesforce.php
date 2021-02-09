@@ -124,19 +124,6 @@ class salesforce {
             'Content-Type: application/json'
         ];
 
-        $useruuid = 'No uuid present';
-
-        try {
-         $user = $DB->get_record('user', array('id' => $USER->id));
-         if ($user) {
-            if (!empty($user->uuid)) {
-                $useruuid = $user->uuid;
-            }
-         }
-        } catch (Exception $e) {
-            error_log('contact_us_salesforce_api: uuid error');
-        }
-
         $data = json_encode([
             'Origin' => self::ORIGIN,
             'Status' => self::STATUS,
@@ -170,7 +157,7 @@ class salesforce {
             }
         } else {
             error_log('contact_us_salesforce_api:' . $result);
-            $this->send_email($subject, $type, $useruuid, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
+            $this->send_email($subject, $type, $olcprofilelink, $description, $result, $httpcode, $courseid, $file);
         }
     }
 
@@ -242,7 +229,6 @@ class salesforce {
      * Utility funciton to send email
      * @param string $subject
      * @param string $type
-     * @param string $uuid
      * @param string $olcprofilelink
      * @param string $description
      * @param string $error
@@ -250,7 +236,7 @@ class salesforce {
      * @param int $courseid
      * @param array $file
      */
-    public function send_email($subject, $type, $uuid, $olcprofilelink, $description, $error, $httpcode, $courseid, $file = false) {
+    public function send_email($subject, $type, $olcprofilelink, $description, $error, $httpcode, $courseid, $file = false) {
         global $DB, $CFG, $USER;
 
         if (empty($error)) {
@@ -276,7 +262,6 @@ class salesforce {
             $USER->email,
             $USER->firstname,
             $USER->lastname,
-            $uuid,
             $olcprofilelink,
             $description,
             $httpcode,
