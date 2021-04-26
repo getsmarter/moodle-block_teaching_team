@@ -87,3 +87,8 @@
     font-size: 12px;
     padding: 5px 20px;
 }
+
+#page-blocks-teaching_team-contact_us .contact-us-submit .fa-spin {
+    vertical-align: middle;
+    display: none;
+}

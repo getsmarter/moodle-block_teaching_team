@@ -1,7 +1,7 @@
 <div class="row">
     <h1 class="col-12">{{title}}</h1>
     <div class="col-12">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" id="student_contact_us_form">
             <div class="form-group">
                 <label for="context" id="reasonlabel">{{reasonlabel}}</label>
                 <select
@@ -39,8 +39,18 @@
             </div>
             <div>
                 <a href="{{cancelurl}}" class="btn btn-primary float-right ml-3">Cancel</a>
-                <button type="submit" class="btn btn-primary float-right btn-sm ml-0 mb-0 contact-us-submit">Submit</button>
+                <button type="submit" class="btn btn-primary float-right btn-sm ml-0 mb-0 contact-us-submit">
+                    Submit
+                    <i class="icon fa fa-circle-o-notch fa-spin fa-fw " aria-hidden="true" ></i>
+                </button>
             </div>
         </form>
     </div>
+    {{#js}}
+        $('#student_contact_us_form').on('submit', function(e) {
+            $('.contact-us-submit').prop("disabled", true );
+            $('.contact-us-submit').css("cursor", "not-allowed");
+            $('.contact-us-submit .fa-spin').css("display", "inline-block");
+        });
+    {{/js}}
 </div>
