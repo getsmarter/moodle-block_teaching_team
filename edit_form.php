@@ -148,7 +148,7 @@ class block_teaching_team_edit_form extends block_edit_form {
 
         $courseid = $PAGE->course->id;
         $context = context_course::instance($courseid);
-        $rolessql = 'SELECT r.id, r.name  from {role_assignments} ra LEFT JOIN {role} r on ra.roleid WHERE r.shortname <> "student" and r.name <> "" and ra.contextid = ?';
+        $rolessql = 'SELECT distinct r.id, r.name  from {role_assignments} ra LEFT JOIN {role} r on ra.roleid WHERE r.shortname <> "student" and r.name <> "" and ra.contextid = ?';
 
         $roles = $DB->get_records_sql_menu($rolessql, array($context->id));
 
