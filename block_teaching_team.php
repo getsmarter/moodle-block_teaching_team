@@ -141,8 +141,7 @@ class block_teaching_team extends block_base {
                         get_string('contact_us_form_support_page_link', 'block_teaching_team'),
                         [
                             'href' => $url,
-                            'class' => 'btn btn-primary mx-auto',
-                            'style' => 'border-bottom: 1px solid #bbb !important'
+                            'class' => 'btn btn-secondary mx-auto'
                         ]
                     );
                 }
@@ -154,7 +153,7 @@ class block_teaching_team extends block_base {
                         [
                             'class' => 'btn btn-primary',
                             'id' => 'contact_us_form_support_help_link',
-                            'style' => 'margin-left: 4px; border-bottom: 1px solid #bbb !important'
+                            'style' => 'margin-left: 4px;'
                         ]
                     );
                 }
