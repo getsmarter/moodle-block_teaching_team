@@ -153,7 +153,7 @@ class block_teaching_team extends block_base {
                         [
                             'class' => 'btn btn-primary',
                             'id' => 'contact_us_form_support_help_link',
-                            'style' => 'margin-left: 4px;'
+                            'style' => 'margin-left: 0.25rem;'
                         ]
                     );
                 }
